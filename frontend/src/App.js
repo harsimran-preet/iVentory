@@ -1,12 +1,16 @@
+import Footer from "./components/Footer/footer";
+import Header from "./components/Header/header";
+import "./App.css";
+import LandingPage from "./screens/LandingPage/LandingPage";
 
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      Hello!
-    </div>
-  );
-}
+const App = () => (
+  <>
+    <Header />
+    <main>
+      <LandingPage />
+    </main>
+    <Footer />
+  </>
+);
 
 export default App;
