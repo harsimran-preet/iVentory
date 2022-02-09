@@ -1,27 +1,23 @@
-const userService = require('./user-services');
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const port = 5000;
+const aport = 3000;
+const users = require("./data/notes");
+const dotenv = require("dotenv"); //place to store private stuff
+dotenv.config();
 
-app.use(cors());
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("API is running..");
+});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});      
+app.get("/users", (req, res) => {
+  res.json(users);
+});
 
-app.get('/users', async (req, res) => {
-  try {
-    const users = await userService.getUsers();
-    let result = {user_list: users};
-    res.send(result);
-  } catch(error) {
-    console.log("Mongoose error: " + error);
-    res.status(500).send("Error occurred in the server");
-  }
+app.get("/users/:id", (req, res) => {
+  const user = users.find((n) => n.id === req.params.id);
+  res.send(user);
 });
