@@ -1,12 +1,53 @@
 const mongoose = require("mongoose");
+const User = require("./user");
 
-const InventorySchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
+const PermissionSchema = new mongoose.Schema({
+  userId: {
+    type: "ObjectId",
+    ref: "User",
   },
-}, {collection : 'inventory_list'});
+  // ENUM for permissions
+  permission: {
+    type: "String",
+    enum: ["ADMIN"],
+    default: "ADMIN",
+  },
+});
+
+const ItemSchema = new mongoose.Schema({
+  name: String,
+  quantity: Number,
+  link: String,
+  barcodeNum: String,
+});
+
+const InventorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    permissions: [PermissionSchema],
+    description: {
+      type: String,
+      trim: true,
+      validate(value) {
+        if (value.length > 100)
+          throw new Error("Description must be shorter than 100 characters");
+      },
+    },
+    inventoryTable: [ItemSchema],
+    columnNames: [String],
+    lastModified: Date,
+    lastModifiedBy: String,
+  },
+  { collection: "inventory_list" }
+);
+
+PermissionSchema.path("userId").validate(async (value) => {
+  return await User.findById(value);
+}, "User does not exist");
 
 const Inventory = mongoose.model("Inventory", InventorySchema);
 
