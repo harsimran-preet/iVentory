@@ -70,7 +70,18 @@ async function addInventory() {
     name: "Test Inventory",
     permissions: [
       {
-        userId: "62044185450acd82cf0d895d",
+        userId: "6206ca0a0b2d60932d986465",
+      },
+    ],
+    inventoryTable: [
+      {
+        values: ["Test Item", 0],
+      },
+      {
+        values: ["Test Item 2", 1],
+      },
+      {
+        values: ["Test Item 3", 2],
       },
     ],
   });

@@ -15,10 +15,7 @@ const PermissionSchema = new mongoose.Schema({
 });
 
 const ItemSchema = new mongoose.Schema({
-  name: String,
-  quantity: Number,
-  link: String,
-  barcodeNum: String,
+  values: [mongoose.Schema.Types.Mixed],
 });
 
 const InventorySchema = new mongoose.Schema(
@@ -38,7 +35,10 @@ const InventorySchema = new mongoose.Schema(
       },
     },
     inventoryTable: [ItemSchema],
-    columnNames: [String],
+    columnNames: {
+      type: [String],
+      default: ["Name", "Quantity"],
+    },
     lastModified: Date,
     lastModifiedBy: String,
   },
