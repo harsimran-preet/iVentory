@@ -15,7 +15,10 @@ const PermissionSchema = new mongoose.Schema({
 });
 
 const ItemSchema = new mongoose.Schema({
-  values: [mongoose.Schema.Types.Mixed],
+  values: {
+    type: [mongoose.Schema.Types.Mixed],
+    default: ["", ""],
+  },
 });
 
 const InventorySchema = new mongoose.Schema(
