@@ -53,6 +53,17 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
+async function updateInventory(id) {
+  await Inventory.updateOne(
+    { _id: id },
+    {
+      $push: {
+        "inventoryTable.$[].values": "test update",
+      },
+    }
+  ).exec();
+}
+
 /********************************
  *  Database testing functions
  ********************************/
@@ -89,9 +100,31 @@ async function addInventory() {
   return exampleInventory;
 }
 
+async function testAddColumn() {
+  const inventory_id = "6206db25720f7dbdbc0b0e0f";
+  Inventory.findByIdAndUpdate(inventory_id, {
+    $push: {
+      columnNames: "Demo column",
+    },
+  }).exec();
+  updateInventory(inventory_id);
+}
+
+async function testDeleteColumn() {
+  const inventory_id = "6206db25720f7dbdbc0b0e0f";
+  Inventory.findByIdAndUpdate(inventory_id, {
+    $pull: {
+      columnNames: "Demo column",
+    },
+  }).exec();
+}
+
 exports.getUsers = getUsers;
 exports.getInventories = getInventories;
 exports.addUser = addUser;
 exports.addInventory = addInventory;
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
+
+exports.testAddColumn = testAddColumn;
+exports.testDeleteColumn = testDeleteColumn;

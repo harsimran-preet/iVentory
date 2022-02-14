@@ -78,3 +78,23 @@ app.get("/addInventory", async (req, res) => {
     res.status(500).send("Error occurred in the server");
   }
 });
+
+app.post("/inventory/addColumn", async (req, res) => {
+  try {
+    dbService.testAddColumn();
+    res.status(201).end();
+  } catch (error) {
+    console.log("Mongoose error: " + error);
+    res.status(500).send("Error occured in the server");
+  }
+});
+
+app.delete("/inventory/deleteColumn", async (req, res) => {
+  try {
+    dbService.testDeleteColumn();
+    res.status(204).end();
+  } catch (error) {
+    console.log("Mongoose error: " + error);
+    res.status(500).send("Error occured in the server");
+  }
+});
