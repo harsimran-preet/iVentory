@@ -35,6 +35,12 @@ async function getInventories() {
   return await Inventory.find();
 }
 
+async function getInventory(id) {
+  let inventoryId = mongoose.Types.ObjectId(id);
+  const result = await Inventory.findById(inventoryId);
+  return result;
+}
+
 async function createInventory(data) {
   const inventory = new Inventory({
     name: data["name"],
@@ -46,10 +52,28 @@ async function createInventory(data) {
     description: data["description"],
   });
   await inventory.save();
+  const userUpdate = await User.findByIdAndUpdate(data["userId"], {
+    $push: {
+      inventoryList: {
+        inventoryId: inventory._id,
+      },
+    },
+  }).exec();
   return inventory;
 }
 
 async function deleteInventory(id) {
+  const inventoryId = mongoose.Types.ObjectId(id);
+  const inventory = await Inventory.findById(inventoryId).exec();
+  const users = inventory["permissions"].map(async (perm) => {
+    await User.findByIdAndUpdate(perm["userId"], {
+      $pull: {
+        inventoryList: { inventoryId: inventoryId },
+      },
+    }).exec();
+    return perm["userId"];
+  });
+  Promise.all(users);
   await Inventory.deleteOne({ _id: id });
 }
 
@@ -95,3 +119,4 @@ exports.addUser = addUser;
 exports.addInventory = addInventory;
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
+exports.getInventory = getInventory;

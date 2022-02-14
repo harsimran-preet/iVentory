@@ -37,6 +37,16 @@ app.get("/inventory", async (req, res) => {
   }
 });
 
+app.get("/inventory/:id", async (req, res) => {
+  try {
+    const inventory = await dbService.getInventory(req.params.id);
+    res.send({ inventory: inventory });
+  } catch (error) {
+    console.log("Mongoose error: " + error);
+    res.status(500).send("Error occurred in the server");
+  }
+});
+
 app.post("/inventory", async (req, res) => {
   let body = req.body;
   try {

@@ -4,14 +4,23 @@ function CreateInventoryForm(props) {
   const [inventory, setInventory] = useState({
     name: "",
     description: "",
+    userId: "",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    if (name == "name")
-      setInventory({ name: value, description: inventory["description"] });
-    if (name == "description")
-      setInventory({ name: inventory["name"], description: value });
+    if (name === "name")
+      setInventory({
+        name: value,
+        description: inventory["description"],
+        userId: props.userId,
+      });
+    if (name === "description")
+      setInventory({
+        name: inventory["name"],
+        description: value,
+        userId: props.userId,
+      });
   }
 
   function createInventory() {
