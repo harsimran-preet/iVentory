@@ -21,6 +21,15 @@ app.get(
   })
 );
 
+app.post(
+  "/user",
+  catchAsync(async (req, res, next) => {
+    let user = await dbService.register(req.body);
+    res.status(201).send({ user: user });
+    next();
+  })
+);
+
 app.get(
   "/inventory",
   catchAsync(async (req, res, next) => {

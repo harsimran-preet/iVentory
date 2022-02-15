@@ -51,6 +51,22 @@ const UserSchema = new mongoose.Schema(
   { collection: "user_list" }
 );
 
+UserSchema.pre("save", async function (next) {
+  let result = await User.countDocuments({
+    email: this.email,
+  });
+  if (result !== 0) {
+    throw new Error("User validation failed: Email already registered");
+  }
+  result = await User.countDocuments({
+    username: this.username,
+  });
+  if (result !== 0) {
+    throw new Error("User validation failed: Username already exists");
+  }
+  next();
+});
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

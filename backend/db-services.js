@@ -28,6 +28,24 @@ async function getUsers() {
   return await User.find();
 }
 
+async function register(data) {
+  const user = new User({
+    username: data["username"],
+    password: data["password"],
+    email: data["email"],
+    lastname: data["lastname"],
+    firstname: data["firstname"],
+  });
+  let result;
+  try {
+    result = await user.save();
+  } catch (error) {
+    console.log(error.message);
+    throw Error(error.message);
+  }
+  return result;
+}
+
 /********************************
  *  Inventory functions
  ********************************/
@@ -80,6 +98,7 @@ async function deleteInventory(id) {
 }
 
 exports.getUsers = getUsers;
+exports.register = register;
 exports.getInventories = getInventories;
 
 exports.createInventory = createInventory;
