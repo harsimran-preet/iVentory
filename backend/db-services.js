@@ -40,10 +40,20 @@ async function register(data) {
   try {
     result = await user.save();
   } catch (error) {
-    console.log(error.message);
-    throw Error(error.message);
+    throw error;
   }
   return result;
+}
+
+async function authenticate(data) {
+  const username = data["username"];
+  const password = data["password"];
+  let user = await User.findOne({
+    username: username,
+    password: password,
+  });
+  if (user == null) throw new Error("User not found");
+  return user;
 }
 
 /********************************
@@ -69,28 +79,29 @@ async function createInventory(data) {
     ],
     description: data["description"],
   });
+
   await inventory.save();
-  User.findByIdAndUpdate(data["userId"], {
+
+  await User.findByIdAndUpdate(data["userId"], {
     $push: {
       inventoryList: {
         inventoryId: inventory._id,
       },
     },
-  }).exec(function (err, inventory) {
-    throw err;
   });
   return inventory;
 }
 
 async function deleteInventory(id) {
   const inventoryId = mongoose.Types.ObjectId(id);
-  const inventory = await Inventory.findById(inventoryId).exec();
+  const inventory = await Inventory.findById(inventoryId);
+  if (inventory == null) throw new Error("Inventory not found");
   const users = inventory["permissions"].map(async (perm) => {
     await User.findByIdAndUpdate(perm["userId"], {
       $pull: {
         inventoryList: { inventoryId: inventoryId },
       },
-    }).exec();
+    });
     return perm["userId"];
   });
   Promise.all(users);
@@ -99,8 +110,9 @@ async function deleteInventory(id) {
 
 exports.getUsers = getUsers;
 exports.register = register;
-exports.getInventories = getInventories;
+exports.authenticate = authenticate;
 
+exports.getInventories = getInventories;
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;

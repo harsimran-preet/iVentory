@@ -3,7 +3,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
-const { validationHandler, errorHandler, catchAsync } = require("./error");
+const {
+  resourceHandler,
+  validationHandler,
+  errorHandler,
+  catchAsync,
+} = require("./error");
 
 app.use(cors());
 app.use(express.json());
@@ -14,9 +19,9 @@ app.get("/", (req, res) => {
 
 app.get(
   "/user",
-  catchAsync(async (req, res) => {
-    let users = await dbService.getUsers();
-    res.send({ user_list: users });
+  catchAsync(async (req, res, next) => {
+    let user = await dbService.authenticate(req.body);
+    res.send({ user: user });
     next();
   })
 );
@@ -66,6 +71,7 @@ app.delete(
   })
 );
 
+app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);
 

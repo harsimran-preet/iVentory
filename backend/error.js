@@ -4,6 +4,22 @@ function catchAsync(fn) {
   };
 }
 
+function resourceHandler(err, req, res, next) {
+  {
+    if (
+      err.message.startsWith("User not found") ||
+      err.message.startsWith("Inventory not found")
+    ) {
+      console.error("Resource Handler: ");
+      console.error(err);
+      res.status(404);
+      res.json({ error: err.message });
+      res.end();
+      return;
+    }
+    next(err);
+  }
+}
 function validationHandler(err, req, res, next) {
   {
     if (
@@ -30,6 +46,7 @@ function errorHandler(err, req, res, next) {
   return;
 }
 
+exports.catchAsync = catchAsync;
+exports.resourceHandler = resourceHandler;
 exports.validationHandler = validationHandler;
 exports.errorHandler = errorHandler;
-exports.catchAsync = catchAsync;

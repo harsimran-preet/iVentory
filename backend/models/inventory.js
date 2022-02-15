@@ -48,9 +48,13 @@ const InventorySchema = new mongoose.Schema(
   { collection: "inventory_list" }
 );
 
-PermissionSchema.path("userId").validate(async (value) => {
-  return await User.findById(value);
-}, "User does not exist");
+InventorySchema.pre("save", async function (next) {
+  let result = await User.findById(this.permissions[0].userId);
+  if (!result) {
+    throw new Error("Inventory validation failed: User not found");
+  }
+  next();
+});
 
 const Inventory = mongoose.model("Inventory", InventorySchema);
 
