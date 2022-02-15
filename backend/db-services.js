@@ -52,13 +52,15 @@ async function createInventory(data) {
     description: data["description"],
   });
   await inventory.save();
-  const userUpdate = await User.findByIdAndUpdate(data["userId"], {
+  User.findByIdAndUpdate(data["userId"], {
     $push: {
       inventoryList: {
         inventoryId: inventory._id,
       },
     },
-  }).exec();
+  }).exec(function (err, inventory) {
+    throw err;
+  });
   return inventory;
 }
 
@@ -77,46 +79,9 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
-/********************************
- *  Database testing functions
- ********************************/
-async function addUser() {
-  const exampleUser = new User({
-    username: "example",
-    password: "examplepassword",
-  });
-  await exampleUser.save();
-  return exampleUser;
-}
-
-async function addInventory() {
-  const exampleInventory = new Inventory({
-    name: "Test Inventory",
-    permissions: [
-      {
-        userId: "6206ca0a0b2d60932d986465",
-      },
-    ],
-    inventoryTable: [
-      {
-        values: ["Test Item", 0],
-      },
-      {
-        values: ["Test Item 2", 1],
-      },
-      {
-        values: ["Test Item 3", 2],
-      },
-    ],
-  });
-  await exampleInventory.save();
-  return exampleInventory;
-}
-
 exports.getUsers = getUsers;
 exports.getInventories = getInventories;
-exports.addUser = addUser;
-exports.addInventory = addInventory;
+
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
