@@ -71,6 +71,24 @@ app.delete(
   })
 );
 
+app.post(
+  "/inventory/addColumn",
+  catchAsync(async (req, res, next) => {
+    await dbService.testAddColumn();
+    res.status(201).end();
+    next();
+  })
+);
+
+app.get(
+  "/inventory/deleteColumn",
+  catchAsync(async (req, res, next) => {
+    dbService.testDeleteColumn();
+    res.status(204).end();
+    next();
+  })
+);
+
 app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);
