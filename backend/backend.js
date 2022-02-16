@@ -89,7 +89,7 @@ app.post("/inventory/addColumn", async (req, res) => {
   }
 });
 
-app.delete("/inventory/deleteColumn", async (req, res) => {
+app.get("/inventory/deleteColumn", async (req, res) => {
   try {
     dbService.testDeleteColumn();
     res.status(204).end();

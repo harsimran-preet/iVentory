@@ -53,15 +53,18 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
-async function updateInventory(id) {
-  await Inventory.updateOne(
-    { _id: id },
-    {
-      $push: {
-        "inventoryTable.$[].values": "test update",
-      },
-    }
-  ).exec();
+async function updateItemColumn(id, code) {
+  //added column
+  if (code == "a") {
+    await Inventory.updateOne(
+      { _id: id },
+      {
+        $push: {
+          "inventoryTable.$[].values": "new column value",
+        },
+      }
+    ).exec();
+  }
 }
 
 /********************************
@@ -104,17 +107,18 @@ async function testAddColumn() {
   const inventory_id = "6206db25720f7dbdbc0b0e0f";
   Inventory.findByIdAndUpdate(inventory_id, {
     $push: {
-      columnNames: "Demo column",
+      columnNames: "new column",
     },
   }).exec();
-  updateInventory(inventory_id);
+  updateItemColumn(inventory_id, "a");
 }
 
+// WIP - Currently not doing shit
 async function testDeleteColumn() {
   const inventory_id = "6206db25720f7dbdbc0b0e0f";
   Inventory.findByIdAndUpdate(inventory_id, {
     $pull: {
-      columnNames: "Demo column",
+      columnNames: "showcase adding column",
     },
   }).exec();
 }
