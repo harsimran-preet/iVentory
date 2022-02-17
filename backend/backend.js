@@ -2,16 +2,20 @@ const dbService = require("./db-services");
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = process.env.PORT || 5000;
+
 const {
   resourceHandler,
   validationHandler,
   errorHandler,
   catchAsync,
-} = require("./error");
+} = require("./errorhandlers");
+
+const { requestLogger } = require("./loghandlers");
 
 app.use(cors());
 app.use(express.json());
+
+app.use(requestLogger);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -93,6 +97,5 @@ app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`iVentory API listening at http://localhost:${PORT}`);
-});
+exports.app = app;
+exports.database = dbService.database;
