@@ -1,25 +1,6 @@
-const mongoose = require("mongoose");
+const database = require("./db-config");
 const User = require("./models/user");
 const Inventory = require("./models/inventory");
-const dotenv = require("dotenv");
-
-dotenv.config();
-mongoose
-  .connect(
-    "mongodb+srv://" +
-      process.env.MONGO_USER +
-      ":" +
-      process.env.MONGO_PWD +
-      "@iventory.qy1fb.mongodb.net/" +
-      process.env.MONGO_DB +
-      "?retryWrites=true&w=majority",
-    // "mongodb://localhost:27017/users",
-    {
-      useNewUrlParser: true, //useFindAndModify: false,
-      useUnifiedTopology: true,
-    }
-  )
-  .catch((error) => console.log(error));
 
 /********************************
  *  User functions
@@ -28,11 +9,44 @@ async function getUsers() {
   return await User.find();
 }
 
+async function register(data) {
+  const user = new User({
+    username: data["username"],
+    password: data["password"],
+    email: data["email"],
+    name: data["name"],
+  });
+  let result;
+  try {
+    result = await user.save();
+  } catch (error) {
+    throw error;
+  }
+  return result;
+}
+
+async function authenticate(data) {
+  const username = data["username"];
+  const password = data["password"];
+  let user = await User.findOne({
+    username: username,
+    password: password,
+  });
+  if (user == null) throw new Error("User not found");
+  return user;
+}
+
 /********************************
  *  Inventory functions
  ********************************/
 async function getInventories() {
   return await Inventory.find();
+}
+
+async function getInventory(id) {
+  let inventoryId = database.ObjectId(id);
+  const result = await Inventory.findById(inventoryId);
+  return result;
 }
 
 async function createInventory(data) {
@@ -45,53 +59,81 @@ async function createInventory(data) {
     ],
     description: data["description"],
   });
+
   await inventory.save();
+
+  await User.findByIdAndUpdate(data["userId"], {
+    $push: {
+      inventoryList: {
+        inventoryId: inventory._id,
+      },
+    },
+  });
   return inventory;
 }
 
 async function deleteInventory(id) {
+  const inventoryId = database.ObjectId(id);
+  const inventory = await Inventory.findById(inventoryId);
+  if (inventory == null) throw new Error("Inventory not found");
+  const users = inventory["permissions"].map(async (perm) => {
+    await User.findByIdAndUpdate(perm["userId"], {
+      $pull: {
+        inventoryList: { inventoryId: inventoryId },
+      },
+    });
+    return perm["userId"];
+  });
+  Promise.all(users);
   await Inventory.deleteOne({ _id: id });
+}
+
+async function updateItemColumn(id, code) {
+  //added column
+  if (code == "a") {
+    await Inventory.updateOne(
+      { _id: id },
+      {
+        $push: {
+          "inventoryTable.$[].values": "new column value",
+        },
+      }
+    ).exec();
+  }
 }
 
 /********************************
  *  Database testing functions
  ********************************/
-async function addUser() {
-  const exampleUser = new User({
-    username: "example",
-    password: "examplepassword",
-  });
-  await exampleUser.save();
-  return exampleUser;
+async function testAddColumn() {
+  const inventory_id = "6206db25720f7dbdbc0b0e0f";
+  Inventory.findByIdAndUpdate(inventory_id, {
+    $push: {
+      columnNames: "new column",
+    },
+  }).exec();
+  updateItemColumn(inventory_id, "a");
 }
 
-async function addInventory() {
-  const exampleInventory = new Inventory({
-    name: "Test Inventory",
-    permissions: [
-      {
-        userId: "6206ca0a0b2d60932d986465",
-      },
-    ],
-    inventoryTable: [
-      {
-        values: ["Test Item", 0],
-      },
-      {
-        values: ["Test Item 2", 1],
-      },
-      {
-        values: ["Test Item 3", 2],
-      },
-    ],
-  });
-  await exampleInventory.save();
-  return exampleInventory;
+async function testDeleteColumn() {
+  const inventory_id = "6206db25720f7dbdbc0b0e0f";
+  Inventory.findByIdAndUpdate(inventory_id, {
+    $pull: {
+      columnNames: "showcase adding column",
+    },
+  }).exec();
 }
 
 exports.getUsers = getUsers;
+exports.register = register;
+exports.authenticate = authenticate;
+
 exports.getInventories = getInventories;
-exports.addUser = addUser;
-exports.addInventory = addInventory;
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
+exports.getInventory = getInventory;
+
+exports.testAddColumn = testAddColumn;
+exports.testDeleteColumn = testDeleteColumn;
+
+exports.database = database;
