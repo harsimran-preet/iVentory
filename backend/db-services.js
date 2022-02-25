@@ -14,8 +14,7 @@ async function register(data) {
     username: data["username"],
     password: data["password"],
     email: data["email"],
-    lastname: data["lastname"],
-    firstname: data["firstname"],
+    name: data["name"],
   });
   let result;
   try {

@@ -29,9 +29,8 @@ describe("Running unittests", () => {
     userData.set("username", "username");
     userData.set("password", "password");
     userData.set("email", "email");
-    userData.set("firstname", "firstname");
-    userData.set("lastname", "lastname");
-    userDataKeys = ["username", "password", "email", "firstname", "lastname"];
+    userData.set("name", "name");
+    userDataKeys = ["username", "password", "email", "name"];
 
     const testMissing = (val) =>
       it("should throw Validation Error when given no " + val, (done) => {
