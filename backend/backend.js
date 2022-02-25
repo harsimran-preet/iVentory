@@ -80,6 +80,15 @@ app.post(
   })
 );
 
+app.post(
+  "/column/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.addColumn(req.body["name"], req.params.inventoryId);
+    res.status(201).end();
+    next();
+  })
+);
+
 app.get(
   "/inventory/deleteColumn",
   catchAsync(async (req, res, next) => {

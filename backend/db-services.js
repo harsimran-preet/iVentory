@@ -115,11 +115,21 @@ async function updateItemColumn(id, code) {
       { _id: id },
       {
         $push: {
-          "inventoryTable.$[].values": "new column value",
+          "inventoryTable.$[].values": "",
         },
       }
     ).exec();
   }
+}
+
+async function addColumn(name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  await Inventory.findByIdAndUpdate(inventory_id, {
+    $push: {
+      columnNames: name,
+    },
+  }).exec();
+  updateItemColumn(inventory_id, "a");
 }
 
 /********************************
@@ -155,3 +165,4 @@ exports.getInventory = getInventory;
 
 exports.testAddColumn = testAddColumn;
 exports.testDeleteColumn = testDeleteColumn;
+exports.addColumn = addColumn;
