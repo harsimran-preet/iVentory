@@ -4,11 +4,11 @@ export default class Login extends Component {
     render() {
         return (
             <form>
-                <h3>Sign In</h3>
+                <h3>Login</h3>
 
                 <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
+                    <label>Username</label>
+                    <input type="username" className="form-control" placeholder="Enter username" />
                 </div>
 
                 <div className="form-group">
@@ -23,7 +23,7 @@ export default class Login extends Component {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <button type="submit" className="btn btn-primary btn-block">Login</button>
                 <p className="forgot-password text-right">
                     Forgot <a href="#">password?</a>
                 </p>
