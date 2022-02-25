@@ -10,7 +10,6 @@ function resourceHandler(err, req, res, next) {
       err.message.startsWith("User not found") ||
       err.message.startsWith("Inventory not found")
     ) {
-      console.error("Resource Handler: ");
       console.error(err);
       res.status(404);
       res.json({ error: err.message });
@@ -26,8 +25,8 @@ function validationHandler(err, req, res, next) {
       err.message.startsWith("User validation failed:") ||
       err.message.startsWith("Inventory validation failed: ")
     ) {
-      console.error("Validation Handler: ");
       console.error(err);
+      // console.error(err);
       res.status(400);
       res.json({ error: err.message });
       res.end();
@@ -38,7 +37,6 @@ function validationHandler(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-  console.error("Error Handler: ");
   console.error(err);
   res.status(500);
   res.json({ error: err.message });

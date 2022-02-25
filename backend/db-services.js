@@ -1,25 +1,6 @@
-const mongoose = require("mongoose");
+const database = require("./db-config");
 const User = require("./models/user");
 const Inventory = require("./models/inventory");
-const dotenv = require("dotenv");
-
-dotenv.config();
-mongoose
-  .connect(
-    "mongodb+srv://" +
-      process.env.MONGO_USER +
-      ":" +
-      process.env.MONGO_PWD +
-      "@iventory.qy1fb.mongodb.net/" +
-      process.env.MONGO_DB +
-      "?retryWrites=true&w=majority",
-    // "mongodb://localhost:27017/users",
-    {
-      useNewUrlParser: true, //useFindAndModify: false,
-      useUnifiedTopology: true,
-    }
-  )
-  .catch((error) => console.log(error));
 
 /********************************
  *  User functions
@@ -33,8 +14,7 @@ async function register(data) {
     username: data["username"],
     password: data["password"],
     email: data["email"],
-    lastname: data["lastname"],
-    firstname: data["firstname"],
+    name: data["name"],
   });
   let result;
   try {
@@ -64,7 +44,7 @@ async function getInventories() {
 }
 
 async function getInventory(id) {
-  let inventoryId = mongoose.Types.ObjectId(id);
+  let inventoryId = database.ObjectId(id);
   const result = await Inventory.findById(inventoryId);
   return result;
 }
@@ -93,7 +73,7 @@ async function createInventory(data) {
 }
 
 async function deleteInventory(id) {
-  const inventoryId = mongoose.Types.ObjectId(id);
+  const inventoryId = database.ObjectId(id);
   const inventory = await Inventory.findById(inventoryId);
   if (inventory == null) throw new Error("Inventory not found");
   const users = inventory["permissions"].map(async (perm) => {
@@ -166,3 +146,5 @@ exports.getInventory = getInventory;
 exports.testAddColumn = testAddColumn;
 exports.testDeleteColumn = testDeleteColumn;
 exports.addColumn = addColumn;
+
+exports.database = database;
