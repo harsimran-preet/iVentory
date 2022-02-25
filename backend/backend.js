@@ -25,3 +25,8 @@ app.get("/users/:id", (req, res) => {
   const user = users.find((n) => n.id === req.params.id);
   res.send(user);
 });
+
+app.get("/item/:inventoryid/:itemid", (req, res) => {
+  const user = users.find((n) => n.id === req.params.id);
+  res.send(user);
+}); 
