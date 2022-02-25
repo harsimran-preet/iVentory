@@ -22,19 +22,6 @@ function Dashboard(props) {
     }
   }
 
-  function getUserInventories() {
-    let inventoryIds = props.user["inventoryList"];
-    let inventories = [];
-    try {
-      inventories = inventoryIds.map(getInventory);
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-    console.log(inventories);
-    return inventories;
-  }
-
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
@@ -70,7 +57,7 @@ function Dashboard(props) {
 
   function deleteInventoryCall(id) {
     deleteInventory(id).then((result) => {
-      if (result !== undefined && result && result.status == 204)
+      if (result !== undefined && result && result.status === 204)
         setInventories(
           inventories.filter((inv) => {
             return inv == null ? inv : inv["_id"] !== id;
@@ -80,11 +67,23 @@ function Dashboard(props) {
   }
 
   useEffect(() => {
+    function getUserInventories() {
+      let inventoryIds = props.user["inventoryList"];
+      let inventories = [];
+      try {
+        inventories = inventoryIds.map(getInventory);
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+      console.log(inventories);
+      return inventories;
+    }
     let inv = getUserInventories();
     Promise.all(inv).then((result) => {
       setInventories(result);
     });
-  }, []);
+  });
 
   return (
     <div>
