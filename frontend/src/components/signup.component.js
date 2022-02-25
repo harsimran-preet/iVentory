@@ -9,20 +9,21 @@ export default class SignUp extends Component {
             <h3>Sign Up</h3>
 
             <div className="form-group">
-              <label>First name</label>
+              <label>Full name</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="First name"
+                placeholder="Enter full name"
               />
             </div>
 
+            
             <div className="form-group">
-              <label>Last name</label>
+              <label>Username</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Last name"
+                placeholder="Enter username"
               />
             </div>
 
@@ -50,7 +51,7 @@ export default class SignUp extends Component {
             <p className="forgot-password text-right">
               Already registered{" "}
               <Link href="#" to={"/sign-in"}>
-                sign in?
+                login?
               </Link>
             </p>
           </form>
