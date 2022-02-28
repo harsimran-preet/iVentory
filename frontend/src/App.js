@@ -8,10 +8,10 @@ import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
 
 function App() {
-  let user = {
-    userId: "6206ca0a0b2d60932d986465",
-    inventoryList: [],
-  };
+  // let user = {
+  //   userId: "6206ca0a0b2d60932d986465",
+  //   inventoryList: [],
+  // };
   return (
     <Router>
       <div className="App">
