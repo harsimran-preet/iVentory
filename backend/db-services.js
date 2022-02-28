@@ -113,8 +113,6 @@ async function addColumn(name, id) {
   updateItemColumn(inventory_id, "a");
 }
 
-async function delColumnValues(name, id) {}
-
 async function delColumn(name, id) {
   const inventory_id = mongoose.Types.ObjectId(id);
   await Inventory.findByIdAndUpdate(inventory_id, {
@@ -137,6 +135,7 @@ async function testAddColumn() {
 }
 
 async function testDeleteColumn() {
+  console.log("deleteColumn");
   const inventory_id = "6206db25720f7dbdbc0b0e0f";
   Inventory.findByIdAndUpdate(inventory_id, {
     $pull: {
