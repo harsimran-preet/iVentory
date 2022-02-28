@@ -112,6 +112,18 @@ app.get(
   })
 );
 
+app.post(
+  "/item/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    const item = await dbService.addItem(
+      req.body["item"],
+      req.params.inventoryId
+    );
+    res.status(201).send({ item: item });
+    next();
+  })
+);
+
 app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);

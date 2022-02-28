@@ -122,6 +122,21 @@ async function delColumn(name, id) {
 }
 
 /********************************
+ *  Item functions
+ ********************************/
+async function addItem(data, id) {
+  const inventory = await Inventory.findById(id).select("columnNames").exec();
+  const item = inventory["columnNames"].map((element) => {
+    if (element in data) return data[element];
+    return "";
+  });
+  await Inventory.findByIdAndUpdate(id, {
+    $push: { inventoryTable: { values: item } },
+  }).exec();
+  return item;
+}
+
+/********************************
  *  Database testing functions
  ********************************/
 async function testAddColumn() {
@@ -157,5 +172,7 @@ exports.testAddColumn = testAddColumn;
 exports.testDeleteColumn = testDeleteColumn;
 exports.addColumn = addColumn;
 exports.delColumn = delColumn;
+
+exports.addItem = addItem;
 
 exports.database = database;
