@@ -124,6 +124,15 @@ app.post(
   })
 );
 
+app.delete(
+  "/item/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.deleteItem(req.params.inventoryId, req.body["itemId"]);
+    res.status(204).end();
+    next();
+  })
+);
+
 app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);

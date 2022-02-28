@@ -126,14 +126,31 @@ async function delColumn(name, id) {
  ********************************/
 async function addItem(data, id) {
   const inventory = await Inventory.findById(id).select("columnNames").exec();
-  const item = inventory["columnNames"].map((element) => {
+  if (inventory === null) throw new Error("Inventory not found");
+  const itemValues = inventory["columnNames"].map((element) => {
     if (element in data) return data[element];
     return "";
   });
-  await Inventory.findByIdAndUpdate(id, {
-    $push: { inventoryTable: { values: item } },
+  const itemId = mongoose.Types.ObjectId();
+  const item = {
+    _id: itemId,
+    values: itemValues,
+  };
+  let updated = await Inventory.findByIdAndUpdate(id, {
+    $push: { inventoryTable: item },
   }).exec();
+  if (updated === null) throw new Error("Inventory not found");
   return item;
+}
+
+async function deleteItem(invId, itemId) {
+  if (!invId || !itemId) throw Error("Id is undefined");
+  const updated = await Inventory.findByIdAndUpdate(invId, {
+    $pull: { inventoryTable: { _id: itemId } },
+  }).exec();
+  if (updated === null) {
+    throw new Error("Inventory or Item not found");
+  }
 }
 
 /********************************
@@ -174,5 +191,6 @@ exports.addColumn = addColumn;
 exports.delColumn = delColumn;
 
 exports.addItem = addItem;
+exports.deleteItem = deleteItem;
 
 exports.database = database;
