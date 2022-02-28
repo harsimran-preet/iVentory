@@ -6,8 +6,7 @@ const CreateItem = () => {
   return (
     <div className="main">
       <Container>
-        <Row>
-        </Row>
+        <Row></Row>
       </Container>
     </div>
   );

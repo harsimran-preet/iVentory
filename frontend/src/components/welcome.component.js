@@ -13,7 +13,7 @@ export default class Welcome extends Component {
           organize your data, and upload it in just a few minutes.
         </p>
         <p align="center">All for Free (for now)</p>
-        
+
         {/* <button type="submit" className="btn btn-primary btn-block">
           Login
         </button> */}
