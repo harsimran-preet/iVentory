@@ -94,13 +94,23 @@ app.post(
 );
 
 app.get(
-  "/inventory/deleteColumn",
+  "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
-    dbService.testDeleteColumn();
+    await dbService.delColumn(req.body["name"], req.params.inventoryId);
     res.status(204).end();
     next();
   })
 );
+
+// Hardcoded test
+// app.get(
+//   "/inventory/deleteColumn",
+//   catchAsync(async (req, res, next) => {
+//     dbService.testDeleteColumn();
+//     res.status(204).end();
+//     next();
+//   })
+// );
 
 app.use(resourceHandler);
 app.use(validationHandler);

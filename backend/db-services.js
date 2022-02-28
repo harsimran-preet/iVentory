@@ -1,6 +1,7 @@
 const database = require("./db-config");
 const User = require("./models/user");
 const Inventory = require("./models/inventory");
+const mongoose = require("mongoose");
 
 /********************************
  *  User functions
@@ -112,6 +113,16 @@ async function addColumn(name, id) {
   updateItemColumn(inventory_id, "a");
 }
 
+async function delColumnValues(name, id) {}
+
+async function delColumn(name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  await Inventory.findByIdAndUpdate(inventory_id, {
+    $pull: { columnNames: name },
+  }).exec();
+  // delColumnValues();
+}
+
 /********************************
  *  Database testing functions
  ********************************/
@@ -146,5 +157,6 @@ exports.getInventory = getInventory;
 exports.testAddColumn = testAddColumn;
 exports.testDeleteColumn = testDeleteColumn;
 exports.addColumn = addColumn;
+exports.delColumn = delColumn;
 
 exports.database = database;
