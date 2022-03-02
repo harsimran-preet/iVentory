@@ -89,18 +89,15 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
-async function updateItemColumn(id, code) {
-  //added column
-  if (code == "a") {
-    await Inventory.updateOne(
-      { _id: id },
-      {
-        $push: {
-          "inventoryTable.$[].values": "",
-        },
-      }
-    ).exec();
-  }
+async function updateItemColumn(id) {
+  await Inventory.updateOne(
+    { _id: id },
+    {
+      $push: {
+        "inventoryTable.$[].values": "",
+      },
+    }
+  ).exec();
 }
 
 async function addColumn(name, id) {
@@ -110,15 +107,32 @@ async function addColumn(name, id) {
       columnNames: name,
     },
   }).exec();
-  updateItemColumn(inventory_id, "a");
+  updateItemColumn(inventory_id);
 }
 
 async function delColumn(name, id) {
   const inventory_id = mongoose.Types.ObjectId(id);
+  const inventory = await Inventory.findById(inventory_id)
+    .select("columnNames")
+    .exec();
+  if (inventory === null) throw new Error("Inventory not found");
+  let columnIndex = inventory["columnNames"].indexOf(name);
+  if (columnIndex === -1) {
+    console.log("Column not found");
+  } else {
+    delColumnValues(columnIndex, id);
+  }
   await Inventory.findByIdAndUpdate(inventory_id, {
     $pull: { columnNames: name },
   }).exec();
-  // delColumnValues();
+}
+
+async function delColumnValues(index, id) {
+  const result = await Inventory.findById(id);
+  for (let i = 0; i < result["inventoryTable"].length; i++) {
+    result["inventoryTable"][i]["values"].splice(index, 1);
+  }
+  await result.save();
 }
 
 /********************************
