@@ -4,3 +4,4 @@ node_modules
 backend/.env
 .DS_STORE
 backend/.DS_STORE
+.idea/

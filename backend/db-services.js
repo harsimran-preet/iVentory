@@ -1,6 +1,7 @@
 const database = require("./db-config");
 const User = require("./models/user");
 const Inventory = require("./models/inventory");
+const mongoose = require("mongoose");
 
 /********************************
  *  User functions
@@ -88,42 +89,104 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
-async function updateItemColumn(id, code) {
-  //added column
-  if (code == "a") {
-    await Inventory.updateOne(
-      { _id: id },
-      {
-        $push: {
-          "inventoryTable.$[].values": "new column value",
-        },
-      }
-    ).exec();
+async function updateColumnName(old_name, new_name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  const inventory = await Inventory.findById(inventory_id);
+  if (inventory === null) throw new Error("Inventory not found");
+  let column = inventory["columnNames"].indexOf(old_name);
+  if (column === -1) {
+    console.log("Column not found");
+  } else {
+    inventory["columnNames"][column] = new_name;
+  }
+  await inventory.save();
+}
+
+async function updateItemColumn(id) {
+  await Inventory.updateOne(
+    { _id: id },
+    {
+      $push: {
+        "inventoryTable.$[].values": "",
+      },
+    }
+  ).exec();
+}
+
+async function addColumn(name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  await Inventory.findByIdAndUpdate(inventory_id, {
+    $push: {
+      columnNames: name,
+    },
+  }).exec();
+  updateItemColumn(inventory_id);
+}
+
+async function delColumn(name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  const inventory = await Inventory.findById(inventory_id)
+    .select("columnNames")
+    .exec();
+  if (inventory === null) throw new Error("Inventory not found");
+  let columnIndex = inventory["columnNames"].indexOf(name);
+  if (columnIndex === -1) {
+    console.log("Column not found");
+  } else {
+    delColumnValues(columnIndex, id);
+  }
+  await Inventory.findByIdAndUpdate(inventory_id, {
+    $pull: { columnNames: name },
+  }).exec();
+}
+
+async function delColumnValues(index, id) {
+  const result = await Inventory.findById(id);
+  for (let i = 0; i < result["inventoryTable"].length; i++) {
+    result["inventoryTable"][i]["values"].splice(index, 1);
+  }
+  await result.save();
+}
+
+/********************************
+ *  Item functions
+ ********************************/
+async function addItem(data, id) {
+  const inventory = await Inventory.findById(id).select("columnNames").exec();
+  if (inventory === null) throw new Error("Inventory not found");
+  const itemValues = inventory["columnNames"].map((element) => {
+    if (element in data) return data[element];
+    return "";
+  });
+  const itemId = mongoose.Types.ObjectId();
+  const item = {
+    _id: itemId,
+    values: itemValues,
+  };
+  let updated = await Inventory.findByIdAndUpdate(id, {
+    $push: { inventoryTable: item },
+  }).exec();
+  if (updated === null) throw new Error("Inventory not found");
+  return item;
+}
+
+async function deleteItem(invId, itemId) {
+  if (!invId || !itemId) throw Error("Id is undefined");
+  const updated = await Inventory.findByIdAndUpdate(invId, {
+    $pull: { inventoryTable: { _id: itemId } },
+  }).exec();
+  if (updated === null) {
+    throw new Error("Inventory or Item not found");
   }
 }
 
 /********************************
  *  Database testing functions
  ********************************/
-async function testAddColumn() {
-  const inventory_id = "6206db25720f7dbdbc0b0e0f";
-  Inventory.findByIdAndUpdate(inventory_id, {
-    $push: {
-      columnNames: "new column",
-    },
-  }).exec();
-  updateItemColumn(inventory_id, "a");
-}
 
-async function testDeleteColumn() {
-  const inventory_id = "6206db25720f7dbdbc0b0e0f";
-  Inventory.findByIdAndUpdate(inventory_id, {
-    $pull: {
-      columnNames: "showcase adding column",
-    },
-  }).exec();
-}
-
+/********************************
+ *  Exports
+ ********************************/
 exports.getUsers = getUsers;
 exports.register = register;
 exports.authenticate = authenticate;
@@ -133,7 +196,11 @@ exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
 
-exports.testAddColumn = testAddColumn;
-exports.testDeleteColumn = testDeleteColumn;
+exports.addColumn = addColumn;
+exports.delColumn = delColumn;
+exports.updateColumnName = updateColumnName;
+
+exports.addItem = addItem;
+exports.deleteItem = deleteItem;
 
 exports.database = database;

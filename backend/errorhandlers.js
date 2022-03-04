@@ -8,7 +8,8 @@ function resourceHandler(err, req, res, next) {
   {
     if (
       err.message.startsWith("User not found") ||
-      err.message.startsWith("Inventory not found")
+      err.message.startsWith("Inventory not found") ||
+      err.message.startsWith("Inventory or Item not found")
     ) {
       console.error(err);
       res.status(404);

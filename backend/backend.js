@@ -75,18 +75,52 @@ app.delete(
 );
 
 app.post(
-  "/inventory/addColumn",
+  "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
-    await dbService.testAddColumn();
+    await dbService.addColumn(req.body["name"], req.params.inventoryId);
     res.status(201).end();
     next();
   })
 );
 
-app.get(
-  "/inventory/deleteColumn",
+app.delete(
+  "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
-    dbService.testDeleteColumn();
+    await dbService.delColumn(req.body["name"], req.params.inventoryId);
+    res.status(204).end();
+    next();
+  })
+);
+
+app.put(
+  "/column/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.updateColumnName(
+      req.body["old"],
+      req.body["new"],
+      req.params.inventoryId
+    );
+    res.status(204).end();
+    next();
+  })
+);
+
+app.post(
+  "/item/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    const item = await dbService.addItem(
+      req.body["item"],
+      req.params.inventoryId
+    );
+    res.status(201).send({ item: item });
+    next();
+  })
+);
+
+app.delete(
+  "/item/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.deleteItem(req.params.inventoryId, req.body["itemId"]);
     res.status(204).end();
     next();
   })
