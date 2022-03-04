@@ -1,15 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import PopUp from "./PopUp";
-import Table from "./Table";
+import DashboardTable from "./DashboardTable";
+import "./Dashboard.css";
+import CreateInventoryForm from "./CreateInventoryForm";
 
 function Dashboard(props) {
-  const [seen, setSeen] = useState(false);
   const [inventories, setInventories] = useState([]);
-
-  function togglePop() {
-    setSeen(!seen);
-  }
+  console.log(props);
 
   async function getInventory(id) {
     let url = `http://localhost:5000/inventory/${id}`;
@@ -20,19 +17,6 @@ function Dashboard(props) {
       console.log(err);
       return null;
     }
-  }
-
-  function getUserInventories() {
-    let inventoryIds = props.user["inventoryList"];
-    let inventories = [];
-    try {
-      inventories = inventoryIds.map(getInventory);
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-    console.log(inventories);
-    return inventories;
   }
 
   async function createInventory(inventory) {
@@ -70,7 +54,7 @@ function Dashboard(props) {
 
   function deleteInventoryCall(id) {
     deleteInventory(id).then((result) => {
-      if (result !== undefined && result && result.status == 204)
+      if (result !== undefined && result && result.status === 204)
         setInventories(
           inventories.filter((inv) => {
             return inv == null ? inv : inv["_id"] !== id;
@@ -80,28 +64,34 @@ function Dashboard(props) {
   }
 
   useEffect(() => {
+    function getUserInventories() {
+      let inventoryIds = props.user["inventoryList"].map((input) => {
+        return input["inventoryId"];
+      });
+      let inventories = [];
+      try {
+        inventories = inventoryIds.map(getInventory);
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+
+      return inventories;
+    }
     let inv = getUserInventories();
     Promise.all(inv).then((result) => {
       setInventories(result);
     });
-  }, []);
-
+  }, [props.user]);
   return (
-    <div>
-      <Table
+    <div className="dashboard-inner">
+      <DashboardTable
         inventories={inventories}
         handleDelete={deleteInventoryCall}
-      ></Table>
-      <div className="btn" onClick={togglePop}>
-        <button>Create Inventory</button>
-      </div>
-      {seen ? (
-        <PopUp
-          toggle={togglePop}
-          handleCreate={createInventoryCall}
-          userId={props.user["userId"]}
-        />
-      ) : null}
+      ></DashboardTable>
+      <CreateInventoryForm
+        handleCreateInventory={createInventoryCall}
+      ></CreateInventoryForm>
     </div>
   );
 }

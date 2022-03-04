@@ -6,12 +6,26 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
+import Dashboard from "./screens/Dashboard/Dashboard";
 
 function App() {
-  // let user = {
-  //   userId: "6206ca0a0b2d60932d986465",
-  //   inventoryList: [],
-  // };
+  let user = {
+    userId: "6206ca0a0b2d60932d986465",
+    inventoryList: [
+      {
+        inventoryId: "6209fd4c597be1a721481924",
+        _id: "6209fd4c597be1a721481931",
+      },
+      {
+        inventoryId: "620ac01f1b60f67c6e895b04",
+        _id: "620ac0201b60f67c6e895b11",
+      },
+      {
+        inventoryId: "62180b4b3890a3a14267dd5d",
+        _id: "62180b4b3890a3a14267dd6b",
+      },
+    ],
+  };
   return (
     <Router>
       <div className="App">
@@ -20,7 +34,6 @@ function App() {
             <Link className="navbar-brand" to={"/welcome"}>
               iVentory
             </Link>
-
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
@@ -31,6 +44,11 @@ function App() {
                 <li className="nav-item">
                   <Link className="nav-link" to={"/sign-up"}>
                     Sign up
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/Dashboard"}>
+                    Dashboard
                   </Link>
                 </li>
               </ul>
@@ -45,6 +63,9 @@ function App() {
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
+              <Route path="/dashboard">
+                <Dashboard user={user}></Dashboard>
+              </Route>
             </Switch>
           </div>
         </div>

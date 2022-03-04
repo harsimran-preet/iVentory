@@ -1,13 +1,14 @@
 import React from "react";
+import "./Dashboard.css";
 
-function Table(props) {
+function DashboardTable(props) {
   return (
-    <table>
+    <table className="dashboard-table">
       <TableHeader />
       <TableBody
         inventories={props.inventories}
         handleDelete={props.handleDelete}
-      />
+      ></TableBody>
     </table>
   );
 }
@@ -15,8 +16,8 @@ function Table(props) {
 function TableHeader() {
   return (
     <thead>
-      <tr>
-        <th>ID</th>
+      <tr className="dashboard-row">
+        {/* <th>ID</th> */}
         <th>Name</th>
         <th>Description</th>
       </tr>
@@ -28,8 +29,8 @@ function TableBody(props) {
   const rows = props.inventories.map((row, index) => {
     if (row !== null)
       return (
-        <tr key={index}>
-          <td>{row._id}</td>
+        <tr key={index} className="dashboard-row">
+          {/* <td>{row._id}</td> */}
           <td>{row.name}</td>
           <td>{row.description}</td>
           <td>
@@ -39,7 +40,7 @@ function TableBody(props) {
       );
     else
       return (
-        <tr key={index}>
+        <tr key={index} className="dashboard-row">
           <td>Inventory Not Found</td>
         </tr>
       );
@@ -48,4 +49,4 @@ function TableBody(props) {
   return <tbody>{rows}</tbody>;
 }
 
-export default Table;
+export default DashboardTable;
