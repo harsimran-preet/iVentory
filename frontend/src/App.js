@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
+import CreateItem from "./components/createitem.component";
 
 function App() {
   // let user = {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
+              <Route path="/create-item" component={CreateItem} />
             </Switch>
           </div>
         </div>
