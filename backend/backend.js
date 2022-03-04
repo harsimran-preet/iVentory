@@ -76,15 +76,6 @@ app.delete(
 );
 
 app.post(
-  "/inventory/addColumn",
-  catchAsync(async (req, res, next) => {
-    await dbService.testAddColumn();
-    res.status(201).end();
-    next();
-  })
-);
-
-app.post(
   "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
     await dbService.addColumn(req.body["name"], req.params.inventoryId);
@@ -102,11 +93,14 @@ app.delete(
   })
 );
 
-// Hardcoded test
-app.get(
-  "/inventory/deleteColumn",
+app.put(
+  "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
-    dbService.testDeleteColumn();
+    await dbService.updateColumnName(
+      req.body["old"],
+      req.body["new"],
+      req.params.inventoryId
+    );
     res.status(204).end();
     next();
   })

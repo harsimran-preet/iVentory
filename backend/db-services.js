@@ -89,6 +89,19 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
+async function updateColumnName(old_name, new_name, id) {
+  const inventory_id = mongoose.Types.ObjectId(id);
+  const inventory = await Inventory.findById(inventory_id);
+  if (inventory === null) throw new Error("Inventory not found");
+  let column = inventory["columnNames"].indexOf(old_name);
+  if (column === -1) {
+    console.log("Column not found");
+  } else {
+    inventory["columnNames"][column] = new_name;
+  }
+  await inventory.save();
+}
+
 async function updateItemColumn(id) {
   await Inventory.updateOne(
     { _id: id },
@@ -170,26 +183,10 @@ async function deleteItem(invId, itemId) {
 /********************************
  *  Database testing functions
  ********************************/
-async function testAddColumn() {
-  const inventory_id = "6206db25720f7dbdbc0b0e0f";
-  Inventory.findByIdAndUpdate(inventory_id, {
-    $push: {
-      columnNames: "new column",
-    },
-  }).exec();
-  updateItemColumn(inventory_id, "a");
-}
 
-async function testDeleteColumn() {
-  console.log("deleteColumn");
-  const inventory_id = "6206db25720f7dbdbc0b0e0f";
-  Inventory.findByIdAndUpdate(inventory_id, {
-    $pull: {
-      columnNames: "showcase adding column",
-    },
-  }).exec();
-}
-
+/********************************
+ *  Exports
+ ********************************/
 exports.getUsers = getUsers;
 exports.register = register;
 exports.authenticate = authenticate;
@@ -199,10 +196,9 @@ exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
 
-exports.testAddColumn = testAddColumn;
-exports.testDeleteColumn = testDeleteColumn;
 exports.addColumn = addColumn;
 exports.delColumn = delColumn;
+exports.updateColumnName = updateColumnName;
 
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
