@@ -4,7 +4,7 @@ function CreateInventoryForm(props) {
   const [inventory, setInventory] = useState({
     name: "",
     description: "",
-    userId: "",
+    userId: props.userId,
   });
 
   function handleChange(event) {
@@ -24,7 +24,6 @@ function CreateInventoryForm(props) {
   }
 
   function createInventory() {
-    console.log(inventory);
     props.handleCreateInventory(inventory);
     setInventory({ name: "", description: "" });
   }

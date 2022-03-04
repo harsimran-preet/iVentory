@@ -6,7 +6,6 @@ import CreateInventoryForm from "./CreateInventoryForm";
 
 function Dashboard(props) {
   const [inventories, setInventories] = useState([]);
-  console.log(props);
 
   async function getInventory(id) {
     let url = `http://localhost:5000/inventory/${id}`;
@@ -37,6 +36,7 @@ function Dashboard(props) {
       let inventory = result["data"]["inventory"];
       if (result !== undefined && result.status === 201)
         setInventories([...inventories, inventory]);
+      props.updateUserInventories(inventory);
     });
   }
 
@@ -90,6 +90,7 @@ function Dashboard(props) {
         handleDelete={deleteInventoryCall}
       ></DashboardTable>
       <CreateInventoryForm
+        userId={props.user.userId}
         handleCreateInventory={createInventoryCall}
       ></CreateInventoryForm>
     </div>

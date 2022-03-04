@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import Welcome from "./components/welcome.component";
 import Dashboard from "./screens/Dashboard/Dashboard";
 
 function App() {
-  let user = {
+  const [user, setUser] = useState({
     userId: "6206ca0a0b2d60932d986465",
     inventoryList: [
       {
@@ -25,7 +25,16 @@ function App() {
         _id: "62180b4b3890a3a14267dd6b",
       },
     ],
-  };
+  });
+
+  function updateInventories(inventory) {
+    console.log(inventory._id);
+    setUser({
+      userId: user["userId"],
+      inventoryList: [...user["inventoryList"], inventory],
+    });
+  }
+
   return (
     <Router>
       <div className="App">
@@ -64,7 +73,10 @@ function App() {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">
-                <Dashboard user={user}></Dashboard>
+                <Dashboard
+                  user={user}
+                  updateUserInventories={updateInventories}
+                ></Dashboard>
               </Route>
             </Switch>
           </div>
