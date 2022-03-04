@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import "./CreateItem.css";
@@ -7,18 +7,15 @@ const CreateItem = () => {
   async function createItem(inventory) {
     let response;
     try {
-      response = await axios.post(
-        "http://localhost:5000/inventory",
-        inventory
-      );
+      response = await axios.post("http://localhost:5000/inventory", inventory);
     } catch (error) {
       console.log(error);
     }
     response.then((result) => {
       /*let item = result["data"]["item"];*/
       if (result !== undefined && result.status === 201);
-        /*setInventories([...inventories, inventory]);*/
-    })
+      /*setInventories([...inventories, inventory]);*/
+    });
 
     let data;
     for (const colname of columnNames) {
@@ -27,14 +24,13 @@ const CreateItem = () => {
     setItem(data);
   }
 
-
   let columnNames = ["name", "quantity", "date"];
   let initialData = {};
   for (const name of columnNames) {
     initialData[name] = "";
   }
 
-  const [item, setItem] = useState(initialData)
+  const [item, setItem] = useState(initialData);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -42,8 +38,7 @@ const CreateItem = () => {
     for (const colname of columnNames) {
       if (name.valueOf() === colname.valueOf()) {
         newData[colname] = value;
-      }
-      else {
+      } else {
         newData[colname] = item[colname];
       }
       setItem(newData);
@@ -63,12 +58,17 @@ const CreateItem = () => {
                   <div className="scroller">
                     {columnNames.map((colName) => {
                       return (
-                        <Row> 
+                        <Row>
                           <Col xs={2} className="justify-content-end">
                             {colName}
                           </Col>
                           <Col xs={4}>
-                            <input type="text" name={colName} class="input" onChange={handleChange}/>
+                            <input
+                              type="text"
+                              name={colName}
+                              class="input"
+                              onChange={handleChange}
+                            />
                           </Col>
                           <Col></Col>
                         </Row>
@@ -80,7 +80,11 @@ const CreateItem = () => {
             </div>
             <div className="buttonContainer">
               <a href="/register">
-                <Button size="lg" className="landingbutton" onClick={createItem}>
+                <Button
+                  size="lg"
+                  className="landingbutton"
+                  onClick={createItem}
+                >
                   Submit
                 </Button>
               </a>
