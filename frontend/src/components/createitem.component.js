@@ -3,19 +3,7 @@ import axios from "axios";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import "./CreateItem.css";
 
-const onOptChange = () => {
-  if (document.getElementById("qtyDropdown").value == "other") {
-    document.getElementById("optionalDiv").hidden = false;
-  } else {
-    document.getElementById("optionalDiv").hidden = true;
-    document.getElementsByName("quantity").value =
-      document.getElementById("qtyDropdown").value;
-  }
-};
-
-
 const CreateItem = () => {
-
   async function createItem(inventory) {
     let response;
     try {
@@ -27,7 +15,7 @@ const CreateItem = () => {
       console.log(error);
     }
     response.then((result) => {
-      let item = result["data"]["item"];
+      /*let item = result["data"]["item"];*/
       if (result !== undefined && result.status === 201);
         /*setInventories([...inventories, inventory]);*/
     })
