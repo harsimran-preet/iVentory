@@ -37,7 +37,6 @@ describe("Running User Model unit tests", () => {
     user["password"] = "invp";
     const err = user.validateSync();
     expect(err).toBeDefined();
-
     expect(err.errors["password"].message).toBe(
       "Validator failed for path `password` with value `invp`"
     );
