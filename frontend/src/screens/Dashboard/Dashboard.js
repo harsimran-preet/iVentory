@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import PopUp from "./PopUp";
 import Table from "./Table";
 
+const PORT = 3000;
+
 function Dashboard(props) {
   const [seen, setSeen] = useState(false);
   const [inventories, setInventories] = useState([]);
@@ -12,7 +14,7 @@ function Dashboard(props) {
   }
 
   async function getInventory(id) {
-    let url = `http://localhost:5000/inventory/${id}`;
+    let url = `http://localhost:${PORT}/inventory/${id}`;
     try {
       const result = await axios.get(url);
       return result["data"]["inventory"];
@@ -38,7 +40,7 @@ function Dashboard(props) {
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
-        "http://localhost:5000/inventory",
+        "http://localhost:${PORT}/inventory",
         inventory
       );
       return response;
@@ -59,7 +61,7 @@ function Dashboard(props) {
   async function deleteInventory(id) {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/inventory/${id}`
+        `http://localhost:${PORT}/inventory/${id}`
       );
       return response;
     } catch (error) {
