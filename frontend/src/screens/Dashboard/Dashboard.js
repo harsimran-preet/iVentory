@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import DashboardTable from "./DashboardTable";
 import "./Dashboard.css";
 import CreateInventoryForm from "./CreateInventoryForm";
+import { Circles } from "react-loading-icons";
 
 function Dashboard(props) {
   const [inventories, setInventories] = useState([]);
@@ -56,7 +57,7 @@ function Dashboard(props) {
     setInventories(props.user["inventoryList"]);
   }, [props.user]);
 
-  if (inventories === undefined) return <p>3</p>;
+  if (inventories === undefined) return <Circles />;
   else
     return (
       <div className="dashboard-inner">

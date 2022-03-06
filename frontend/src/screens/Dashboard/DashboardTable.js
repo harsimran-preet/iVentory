@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 function DashboardTable(props) {
@@ -33,8 +34,12 @@ function TableBody(props) {
       inventory.inventoryId !== null
     )
       return (
-        <tr key={index} className="dashboard-row">
-          <td>{inventory.inventoryId._id}</td>
+        <tr key={inventory.inventoryId._id} className="dashboard-row">
+          <td>
+            <Link to={`/inventory/${inventory.inventoryId._id}`}>
+              {inventory.inventoryId._id}
+            </Link>
+          </td>
           <td>{inventory.inventoryId.name}</td>
           <td>{inventory.inventoryId.description}</td>
           <td>
@@ -46,7 +51,7 @@ function TableBody(props) {
       );
     else
       return (
-        <tr key={index} className="dashboard-row">
+        <tr key={inventory.inventoryId._id} className="dashboard-row">
           <td>Inventory Not Found</td>
         </tr>
       );

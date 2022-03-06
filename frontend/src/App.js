@@ -7,6 +7,7 @@ import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
 import Dashboard from "./screens/Dashboard/Dashboard";
+import InventoryTable from "./screens/Inventory/InventoryTable";
 import axios from "axios";
 
 function App() {
@@ -30,8 +31,6 @@ function App() {
     };
     getUser(userCred);
   }, []);
-
-  function updateInventories(inventory) {}
 
   return (
     <Router>
@@ -71,10 +70,10 @@ function App() {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">
-                <Dashboard
-                  user={user}
-                  updateUserInventories={updateInventories}
-                ></Dashboard>
+                <Dashboard user={user}></Dashboard>
+              </Route>
+              <Route path="/inventory/:inventoryId">
+                <InventoryTable user={user} />
               </Route>
             </Switch>
           </div>
