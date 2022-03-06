@@ -42,6 +42,8 @@
 th,
 td {
   padding: 15px;
+  color: black;
+  overflow: hidden;
 }
 
 .dashboard-popup {

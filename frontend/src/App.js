@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -7,33 +7,31 @@ import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
 import Dashboard from "./screens/Dashboard/Dashboard";
+import axios from "axios";
 
 function App() {
-  const [user, setUser] = useState({
-    userId: "6206ca0a0b2d60932d986465",
-    inventoryList: [
-      {
-        inventoryId: "6209fd4c597be1a721481924",
-        _id: "6209fd4c597be1a721481931",
-      },
-      {
-        inventoryId: "620ac01f1b60f67c6e895b04",
-        _id: "620ac0201b60f67c6e895b11",
-      },
-      {
-        inventoryId: "62180b4b3890a3a14267dd5d",
-        _id: "62180b4b3890a3a14267dd6b",
-      },
-    ],
-  });
+  const [user, setUser] = useState({ state: false });
 
-  function updateInventories(inventory) {
-    console.log(inventory._id);
-    setUser({
-      userId: user["userId"],
-      inventoryList: [...user["inventoryList"], inventory],
-    });
-  }
+  useEffect(() => {
+    async function getUser(userCred) {
+      try {
+        let result = await axios.get("http://localhost:5000/user", userCred);
+        setUser(result["data"]["user"]);
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    }
+    const userCred = {
+      params: {
+        username: "example",
+        password: "examplepassword",
+      },
+    };
+    getUser(userCred);
+  }, []);
+
+  function updateInventories(inventory) {}
 
   return (
     <Router>

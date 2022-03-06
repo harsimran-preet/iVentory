@@ -7,17 +7,6 @@ import CreateInventoryForm from "./CreateInventoryForm";
 function Dashboard(props) {
   const [inventories, setInventories] = useState([]);
 
-  async function getInventory(id) {
-    let url = `http://localhost:5000/inventory/${id}`;
-    try {
-      const result = await axios.get(url);
-      return result["data"]["inventory"];
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-  }
-
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
@@ -64,37 +53,23 @@ function Dashboard(props) {
   }
 
   useEffect(() => {
-    function getUserInventories() {
-      let inventoryIds = props.user["inventoryList"].map((input) => {
-        return input["inventoryId"];
-      });
-      let inventories = [];
-      try {
-        inventories = inventoryIds.map(getInventory);
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
-
-      return inventories;
-    }
-    let inv = getUserInventories();
-    Promise.all(inv).then((result) => {
-      setInventories(result);
-    });
+    setInventories(props.user["inventoryList"]);
   }, [props.user]);
-  return (
-    <div className="dashboard-inner">
-      <DashboardTable
-        inventories={inventories}
-        handleDelete={deleteInventoryCall}
-      ></DashboardTable>
-      <CreateInventoryForm
-        userId={props.user.userId}
-        handleCreateInventory={createInventoryCall}
-      ></CreateInventoryForm>
-    </div>
-  );
+
+  if (inventories === undefined) return <p>3</p>;
+  else
+    return (
+      <div className="dashboard-inner">
+        <DashboardTable
+          inventories={inventories}
+          handleDelete={deleteInventoryCall}
+        ></DashboardTable>
+        <CreateInventoryForm
+          userId={props.user._id}
+          handleCreateInventory={createInventoryCall}
+        ></CreateInventoryForm>
+      </div>
+    );
 }
 
 export default Dashboard;

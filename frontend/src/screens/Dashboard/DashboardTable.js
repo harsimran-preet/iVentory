@@ -17,7 +17,7 @@ function TableHeader() {
   return (
     <thead>
       <tr className="dashboard-row">
-        {/* <th>ID</th> */}
+        <th>ID</th>
         <th>Name</th>
         <th>Description</th>
       </tr>
@@ -26,15 +26,21 @@ function TableHeader() {
 }
 
 function TableBody(props) {
-  const rows = props.inventories.map((row, index) => {
-    if (row !== null)
+  const rows = props.inventories.map((inventory, index) => {
+    if (
+      inventory !== null &&
+      inventory.inventoryId !== undefined &&
+      inventory.inventoryId !== null
+    )
       return (
         <tr key={index} className="dashboard-row">
-          {/* <td>{row._id}</td> */}
-          <td>{row.name}</td>
-          <td>{row.description}</td>
+          <td>{inventory.inventoryId._id}</td>
+          <td>{inventory.inventoryId.name}</td>
+          <td>{inventory.inventoryId.description}</td>
           <td>
-            <button onClick={() => props.handleDelete(row._id)}>Delete</button>
+            <button onClick={() => props.handleDelete(inventory._id)}>
+              Delete
+            </button>
           </td>
         </tr>
       );

@@ -12,8 +12,8 @@ const {
 
 const { requestLogger } = require("./loghandlers");
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 app.use(requestLogger);
 
 app.get("/", (req, res) => {
@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 app.get(
   "/user",
   catchAsync(async (req, res, next) => {
-    let user = await dbService.authenticate(req.body);
+    let user = await dbService.authenticate(req.query);
     res.send({ user: user });
     next();
   })
