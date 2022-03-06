@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forceUpdate } from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -31,6 +31,10 @@ function App() {
     };
     getUser(userCred);
   }, []);
+
+  function updateUser() {
+    forceUpdate(user);
+  }
 
   return (
     <Router>
@@ -70,10 +74,10 @@ function App() {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">
-                <Dashboard user={user}></Dashboard>
+                <Dashboard user={user} updateUser={updateUser}></Dashboard>
               </Route>
               <Route path="/inventory/:inventoryId">
-                <InventoryTable user={user} />
+                <InventoryTable user={user} updateUser={updateUser} />
               </Route>
             </Switch>
           </div>

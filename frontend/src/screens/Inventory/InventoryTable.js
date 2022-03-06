@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./InventoryTable.css";
 import { useParams } from "react-router-dom";
 import { Circles } from "react-loading-icons";
@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import { MdAdd } from "react-icons/md";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import axios from "axios";
 
 /* /inventory/:inventoryId */
 function InventoryTable(props) {
@@ -19,7 +20,6 @@ function InventoryTable(props) {
     }
   }
 
-  console.log(inventory);
   return (
     <div className="table-inner">
       <h2>Inventory: {inventory.name}</h2>
@@ -31,8 +31,17 @@ function InventoryTable(props) {
       </Link>
       <div className="inventory-table">
         <table>
-          <InventoryTableHeader columnNames={inventory.columnNames} />
-          <InventoryTableBody rows={inventory.inventoryTable} />
+          <InventoryTableHeader
+            columnNames={inventory.columnNames}
+            invId={inventory._id}
+            updateUser={props.updateUser}
+          />
+          <InventoryTableBody
+            rows={inventory.inventoryTable}
+            columnNames={inventory.columnNames}
+            invId={inventory._id}
+            updateUser={props.updateUser}
+          />
         </table>
       </div>
     </div>
@@ -47,14 +56,42 @@ function InventoryTableHeader(props) {
       </th>
     );
   });
+
+  async function createColumn(column) {
+    try {
+      return axios.post(`http://localhost:5000/column/${props.invId}`, column);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  function createColumnCall(column) {
+    createColumn(column).then((result) => {
+      if (
+        result !== undefined &&
+        result !== null &&
+        result.statusCode === 201
+      ) {
+        props.updateUser();
+      }
+    });
+  }
+
   return (
     <thead>
       <tr>
         {columns}
         <th>
-          <button className="inventable-button">
-            <MdAdd size={24} className="inventable-add" />
-          </button>
+          <Popup
+            trigger={
+              <button className="inventable-button">
+                <MdAdd size={24} className="inventable-add" />
+              </button>
+            }
+          >
+            <ColumnForm handleCreateColumn={createColumnCall} />
+          </Popup>
         </th>
       </tr>
     </thead>
@@ -86,17 +123,122 @@ function InventoryTableBody(props) {
       </tr>
     );
   });
+
+  async function createRow(row) {
+    try {
+      return axios.post(`http://localhost:5000/item/${props.invId}`, {
+        item: row,
+      });
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  function createRowCall(row) {
+    createRow(row).then((result) => {
+      if (
+        result !== undefined &&
+        result !== null &&
+        result.statusCode === 201
+      ) {
+        // props.updateUser();
+      }
+    });
+  }
+
   return (
     <tbody className="iventable-tbody">
       {rows}
       <tr>
         <td>
-          <button className="inventable-button">
-            <MdAdd size={24} className="inventable-add" />
-          </button>
+          <Popup
+            trigger={
+              <button className="inventable-button">
+                <MdAdd size={24} className="inventable-add" />
+              </button>
+            }
+          >
+            <RowForm
+              handleCreateRow={createRowCall}
+              columnNames={props.columnNames}
+            />
+          </Popup>
         </td>
       </tr>
     </tbody>
+  );
+}
+
+function ColumnForm(props) {
+  const [column, setColumn] = useState({ name: "" });
+
+  function createColumn() {
+    props.handleCreateColumn(column);
+    setColumn({ name: "" });
+  }
+
+  function handleChange(event) {
+    const { value } = event.target;
+    setColumn({ name: value });
+  }
+
+  return (
+    <form>
+      <label>New Column Name</label>
+      <input
+        type="text"
+        id="name"
+        value={column.name}
+        onChange={handleChange}
+      />
+      <button onClick={createColumn}>Create Column</button>
+    </form>
+  );
+}
+
+function RowForm(props) {
+  const initValues = (names) => {
+    let initVal = {};
+    for (const n of names) initVal[n] = "";
+    return initVal;
+  };
+  const [values, setValues] = useState(initValues(props.columnNames));
+
+  function createRow() {
+    props.handleCreateRow(values);
+    setValues(initValues(props.columnNames));
+  }
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    let copy = JSON.parse(JSON.stringify(values));
+    copy[name] = value;
+    setValues(copy);
+  }
+
+  let inputVals = props.columnNames.map((name, index) => {
+    let value = values[index];
+    return (
+      <Row key={index * 3}>
+        <label key={index * 3 + 1}>{name}</label>
+        <input
+          key={index * 3 + 2}
+          type="text"
+          id={name}
+          name={name}
+          value={value}
+          onChange={handleChange}
+        />
+      </Row>
+    );
+  });
+
+  return (
+    <form>
+      {inputVals}
+      <button onClick={createRow}>Create Item</button>
+    </form>
   );
 }
 

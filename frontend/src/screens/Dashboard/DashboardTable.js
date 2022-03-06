@@ -43,7 +43,9 @@ function TableBody(props) {
           <td>{inventory.inventoryId.name}</td>
           <td>{inventory.inventoryId.description}</td>
           <td>
-            <button onClick={() => props.handleDelete(inventory._id)}>
+            <button
+              onClick={() => props.handleDelete(inventory.inventoryId._id)}
+            >
               Delete
             </button>
           </td>

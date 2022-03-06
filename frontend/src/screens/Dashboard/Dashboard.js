@@ -6,7 +6,8 @@ import CreateInventoryForm from "./CreateInventoryForm";
 import { Circles } from "react-loading-icons";
 
 function Dashboard(props) {
-  const [inventories, setInventories] = useState([]);
+  const [inventories, setInventories] = useState(props.user.inventoryList);
+  console.log(props);
 
   async function createInventory(inventory) {
     try {
@@ -26,7 +27,7 @@ function Dashboard(props) {
       let inventory = result["data"]["inventory"];
       if (result !== undefined && result.status === 201)
         setInventories([...inventories, inventory]);
-      props.updateUserInventories(inventory);
+      props.updateUser();
     });
   }
 
@@ -50,11 +51,12 @@ function Dashboard(props) {
             return inv == null ? inv : inv["_id"] !== id;
           })
         );
+      props.updateUser();
     });
   }
 
   useEffect(() => {
-    setInventories(props.user["inventoryList"]);
+    setInventories(props.user.inventoryList);
   }, [props.user]);
 
   if (inventories === undefined) return <Circles />;
