@@ -84,6 +84,7 @@ function InventoryTableHeader(props) {
         {columns}
         <th>
           <Popup
+            className="my-popup"
             trigger={
               <button className="inventable-button">
                 <MdAdd size={24} className="inventable-add" />
@@ -136,6 +137,7 @@ function InventoryTableBody(props) {
         return (
           <td className="inventable-empty-td" key={idx}>
             <Popup
+              className="my-popup"
               trigger={
                 <button className="inventable-item">
                   <p>|Empty|</p>
@@ -155,6 +157,7 @@ function InventoryTableBody(props) {
       return (
         <td className="inventable-td" key={idx}>
           <Popup
+            className="my-popup"
             trigger={
               <button className="inventable-item">
                 <p>{value}</p>
@@ -216,13 +219,16 @@ function ColumnForm(props) {
 
   return (
     <form>
-      <label>New Column Name</label>
-      <input
-        type="text"
-        id="name"
-        value={column.name}
-        onChange={handleChange}
-      />
+      <Row>
+        <label>New Column Name</label>
+        <input
+          className="table-input"
+          type="text"
+          id="name"
+          value={column.name}
+          onChange={handleChange}
+        />
+      </Row>
       <button onClick={createColumn}>Create Column</button>
     </form>
   );
@@ -254,6 +260,7 @@ function RowForm(props) {
       <Row key={index * 3}>
         <label key={index * 3 + 1}>{name}</label>
         <input
+          className="table-input"
           key={index * 3 + 2}
           type="text"
           id={name}
@@ -300,15 +307,16 @@ function ItemForm(props) {
       <Row key={props.k}>
         <label key={"item" + props.k}>New Value</label>
         <input
+          className="table-input"
           key={"input" + props.k}
           type="text"
           value={value}
           onChange={handleChange}
         />
-        <button onClick={editItem}>
-          <p>Edit</p>
-        </button>
       </Row>
+      <button onClick={editItem} className="inventable-submit-button">
+        <p>Edit Item</p>
+      </button>
     </form>
   );
 }
