@@ -89,6 +89,11 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
+async function addUserToInventory(userName, id) {
+  const user = await User.find({ username: userName }).exex();
+  console.log(user);
+}
+
 async function updateColumnName(old_name, new_name, id) {
   const inventory_id = mongoose.Types.ObjectId(id);
   const inventory = await Inventory.findById(inventory_id);
@@ -180,6 +185,25 @@ async function deleteItem(invId, itemId) {
   }
 }
 
+async function updateItem(invId, itemId, colName, value) {
+  if (!invId || !itemId) throw new Error("Invalid id");
+  const inventory = await Inventory.findById(invId);
+  if (inventory === null) throw new Error("Inventory not found");
+  let col = inventory["columnNames"].indexOf(colName);
+  if (col === -1) {
+    console.log("Invalid column");
+  } else {
+    // This goes through all of the items in the Inventory Table to find the matching item Id
+    //const result = await Inventory.findById(invId);
+    for (let i = 0; i < inventory["inventoryTable"].length; i++) {
+      if (inventory["inventoryTable"][i]["_id"].equals(itemId)) {
+        inventory["inventoryTable"][i]["values"][col] = value;
+      }
+    }
+    await inventory.save();
+  }
+}
+
 /********************************
  *  Database testing functions
  ********************************/
@@ -196,11 +220,14 @@ exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
 
+exports.addUserToInventory = addUserToInventory;
+
 exports.addColumn = addColumn;
 exports.delColumn = delColumn;
 exports.updateColumnName = updateColumnName;
 
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
+exports.updateItem = updateItem;
 
 exports.database = database;
