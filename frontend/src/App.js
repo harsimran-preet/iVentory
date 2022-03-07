@@ -49,7 +49,6 @@ function App() {
           </div>
         </nav>
 
-
         <Switch>
           <div className="auth-wrapper">
             <div className="auth-inner">
@@ -60,7 +59,7 @@ function App() {
               <Route path="/dashboard">
                 <Dashboard user={user} />
               </Route>
-            </Switch>
+            </div>
           </div>
         </Switch>
       </div>
