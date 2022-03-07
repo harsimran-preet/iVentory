@@ -2,14 +2,14 @@ const express = require("express");
 const app = express();
 const aport = 3000;
 const users = require("./data/notes");
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require("./routes/userRoutes");
 const dotenv = require("dotenv"); //place to store private stuff
 const connectDB = require("./config/db");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
-
+app.use(express.json());
 dotenv.config();
 connectDB();
-app.use(express.json()); 
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API is running..");
@@ -31,5 +31,5 @@ app.get("/users/:id", (req, res) => {
 app.get("/item/:inventoryid/:itemid", (req, res) => {
   const user = users.find((n) => n.id === req.params.id);
   res.send(user);
-}); 
+});
 app.use("/api/users", userRoutes);
