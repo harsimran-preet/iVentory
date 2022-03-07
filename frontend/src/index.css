@@ -45,7 +45,7 @@ html,
 
 .create-item {
   display: flex;
-  justify-content: start;
+  /* justify-content: start; */
   flex-direction: column;
   text-align: left;
   width: 650px;
