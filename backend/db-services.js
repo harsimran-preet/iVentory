@@ -32,7 +32,9 @@ async function authenticate(data) {
   let user = await User.findOne({
     username: username,
     password: password,
-  });
+  })
+    .populate("inventoryList.inventoryId")
+    .exec();
   if (user == null) throw new Error("User not found");
   return user;
 }
