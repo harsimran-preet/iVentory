@@ -99,31 +99,6 @@ function InventoryTableHeader(props) {
 }
 
 function InventoryTableBody(props) {
-  // for indexing extra 1 for tr html element
-  const numItems = props.rows.length + 1;
-  let rows = props.rows.map((item, rowidx) => {
-    let cols = item.values.map((value, colidx) => {
-      const idx = rowidx * numItems + (colidx + 1);
-      if (value === "") {
-        return (
-          <td className="inventable-empty-td" key={idx}>
-            <p>|Empty|</p>
-          </td>
-        );
-      }
-      return (
-        <td className="inventable-td" key={idx}>
-          <p>{value}</p>
-        </td>
-      );
-    });
-    return (
-      <tr className="inventable-tr" key={rowidx * numItems}>
-        {cols}
-      </tr>
-    );
-  });
-
   async function createRow(row) {
     try {
       return axios.post(`http://localhost:5000/item/${props.invId}`, {
@@ -146,6 +121,62 @@ function InventoryTableBody(props) {
       }
     });
   }
+
+  function editItemCall(item) {
+    console.log(item);
+  }
+
+  // for indexing extra 1 for tr html element
+  const numItems = props.rows.length + 1;
+  let rows = props.rows.map((item, rowidx) => {
+    let cols = item.values.map((value, colidx) => {
+      // idx of Row element and td elements left to right, top to bottom
+      const idx = rowidx * numItems + (colidx + 1);
+      if (value === "") {
+        return (
+          <td className="inventable-empty-td" key={idx}>
+            <Popup
+              trigger={
+                <button className="inventable-item">
+                  <p>|Empty|</p>
+                </button>
+              }
+            >
+              <ItemForm
+                handleEditItem={editItemCall}
+                k={idx}
+                itemId={item._id}
+                colName={props.columnNames[colidx]}
+              />
+            </Popup>
+          </td>
+        );
+      }
+      return (
+        <td className="inventable-td" key={idx}>
+          <Popup
+            trigger={
+              <button className="inventable-item">
+                <p>{value}</p>
+              </button>
+            }
+          >
+            <ItemForm
+              handleEditItem={editItemCall}
+              k={idx}
+              itemId={item._id}
+              colName={props.columnNames[colidx]}
+            />
+          </Popup>
+        </td>
+      );
+    });
+    return (
+      <tr className="inventable-tr" key={rowidx * numItems}>
+        {cols}
+      </tr>
+    );
+  });
 
   return (
     <tbody className="iventable-tbody">
@@ -238,6 +269,46 @@ function RowForm(props) {
     <form>
       {inputVals}
       <button onClick={createRow}>Create Item</button>
+    </form>
+  );
+}
+
+// props.k - itemform index
+// props.handleEditItem - api call to edit the item
+// props.itemId - itemId for props.handleEditItem
+// props.colName - column name of the value you are editing
+function ItemForm(props) {
+  const [value, setValue] = useState("");
+
+  function handleChange(event) {
+    const v = event.target.value;
+    setValue(v);
+  }
+
+  function editItem() {
+    const item = {
+      itemId: props.itemId,
+      value: value,
+      colName: props.colName,
+    };
+    props.handleEditItem(item);
+    // setValue("");
+  }
+
+  return (
+    <form>
+      <Row key={props.k}>
+        <label key={"item" + props.k}>New Value</label>
+        <input
+          key={"input" + props.k}
+          type="text"
+          value={value}
+          onChange={handleChange}
+        />
+        <button onClick={editItem}>
+          <p>Edit</p>
+        </button>
+      </Row>
     </form>
   );
 }

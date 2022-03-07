@@ -57,7 +57,7 @@ function App() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={"/Dashboard"}>
+                  <Link className="nav-link" to={"/dashboard"}>
                     Dashboard
                   </Link>
                 </li>

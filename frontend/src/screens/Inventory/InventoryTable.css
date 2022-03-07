@@ -77,3 +77,9 @@
   background-color: #167bff;
   border-radius: 2px;
 }
+
+.inventable-item {
+  background-color: #fff;
+  color: black;
+  border: none;
+}
