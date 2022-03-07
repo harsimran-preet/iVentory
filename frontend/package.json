@@ -9,6 +9,7 @@
     "axios": "^0.26.0",
     "bootstrap": "^4.3.1",
     "nodemon": "^2.0.15",
+    "prettier": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
@@ -20,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pretty": "prettier --list-different ."
   },
   "eslintConfig": {
     "extends": "react-app"

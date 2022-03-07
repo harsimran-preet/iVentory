@@ -26,5 +26,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.1",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1",
+    "pretty": "^2.0.0"
   }
 }
