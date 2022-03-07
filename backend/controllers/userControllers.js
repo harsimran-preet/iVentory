@@ -2,8 +2,15 @@ const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 
 
-const registerUser = asyncHandler(async(req, res) => {
-    const { name, email, password, picture} = req.body;
+const registerUser = async(req, res) => {
+    const {name, email, password, pic} = req.body;
+    res.json({
+        name, email,
+    });
+};
+
+// const registerUser = asyncHandler(async(req, res) => {
+//     const { name, email, password, picture} = req.body;
 
     // const userExists = await User.findOne({email});
     // if (userExists){
@@ -25,10 +32,10 @@ const registerUser = asyncHandler(async(req, res) => {
     //   res.status(400);
     //   throw new Error("Error Occured!");
     // }
-    res.json ({
-        name, email
-    });
-});
+//     res.json ({
+//         name, email
+//     });
+// });
 
 
 // const authUser = asyncHandler(async (req, res) => {

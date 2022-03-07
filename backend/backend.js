@@ -32,3 +32,4 @@ app.get("/item/:inventoryid/:itemid", (req, res) => {
   const user = users.find((n) => n.id === req.params.id);
   res.send(user);
 }); 
+app.use("/api/users", userRoutes);
