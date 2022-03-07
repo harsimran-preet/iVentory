@@ -89,6 +89,11 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
+async function addUserToInventory(userName, id) {
+  const user = await User.find({ username: userName }).exex();
+  console.log(user);
+}
+
 async function updateColumnName(old_name, new_name, id) {
   const inventory_id = mongoose.Types.ObjectId(id);
   const inventory = await Inventory.findById(inventory_id);
@@ -189,13 +194,13 @@ async function updateItem(invId, itemId, colName, value) {
     console.log("Invalid column");
   } else {
     // This goes through all of the items in the Inventory Table to find the matching item Id
-    const result = await Inventory.findById(invId);
-    for (let i = 0; i < result["inventoryTable"].length; i++) {
-      if (result["inventoryTable"][i]["_id"].equals(itemId)) {
-        result["inventoryTable"][i]["values"][col] = value;
+    //const result = await Inventory.findById(invId);
+    for (let i = 0; i < inventory["inventoryTable"].length; i++) {
+      if (inventory["inventoryTable"][i]["_id"].equals(itemId)) {
+        inventory["inventoryTable"][i]["values"][col] = value;
       }
     }
-    await result.save();
+    await inventory.save();
   }
 }
 
@@ -214,6 +219,8 @@ exports.getInventories = getInventories;
 exports.createInventory = createInventory;
 exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
+
+exports.addUserToInventory = addUserToInventory;
 
 exports.addColumn = addColumn;
 exports.delColumn = delColumn;

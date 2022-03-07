@@ -94,6 +94,18 @@ app.delete(
 );
 
 app.put(
+  "/user/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.addUserToInventory(
+      req.body["username"],
+      req.params.inventoryId
+    );
+    res.status(200).end();
+    next();
+  })
+);
+
+app.put(
   "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
     await dbService.updateColumnName(
@@ -101,7 +113,7 @@ app.put(
       req.body["new"],
       req.params.inventoryId
     );
-    res.status(204).end();
+    res.status(200).end();
     next();
   })
 );
@@ -136,7 +148,7 @@ app.put(
       req.body["colName"],
       req.body["value"]
     );
-    res.status(204).end();
+    res.status(200).end();
     next();
   })
 );
