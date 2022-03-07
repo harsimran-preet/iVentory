@@ -117,13 +117,30 @@ function InventoryTableBody(props) {
         result !== null &&
         result.statusCode === 201
       ) {
-        // props.updateUser();
+        props.updateUser();
       }
     });
   }
 
+  async function editItem(item) {
+    try {
+      return axios.put(`http://localhost:5000/item/${props.invId}`, item);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   function editItemCall(item) {
-    console.log(item);
+    editItem(item).then((result) => {
+      if (
+        result !== undefined &&
+        result !== null &&
+        result.statusCode === 200
+      ) {
+        props.updateUser();
+      }
+    });
   }
 
   // for indexing extra 1 for tr html element
