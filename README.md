@@ -1,6 +1,6 @@
 # iVentory
 
-![Node.js CI](https://github.com/harsimran/iVentory/actions/workflows/node.js.yml/badge.svg)
+![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/node.js.yml/badge.svg)
 
 | Plugin                   | Link                                                                                           |
 | ------------------------ | ---------------------------------------------------------------------------------------------- |
