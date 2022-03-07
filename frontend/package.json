@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "pretty": "prettier --list-different .",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pretty": "prettier --list-different ."
   },
   "eslintConfig": {
     "extends": "react-app"

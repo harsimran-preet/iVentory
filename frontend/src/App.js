@@ -47,6 +47,11 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
+                  <Link className="nav-link" to={"/dashboard"}>
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to={"/sign-in"}>
                     Login
                   </Link>
@@ -66,9 +71,9 @@ function App() {
           </div>
         </nav>
 
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Switch>
+        <Switch>
+          <div className="auth-wrapper">
+            <div className="auth-inner">
               <Route exact path="/" component={Login} />
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={SignUp} />
@@ -79,9 +84,9 @@ function App() {
               <Route path="/inventory/:inventoryId">
                 <InventoryTable user={user} updateUser={updateUser} />
               </Route>
-            </Switch>
+            </div>
           </div>
-        </div>
+        </Switch>
       </div>
     </Router>
   );

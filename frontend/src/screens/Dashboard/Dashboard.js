@@ -5,6 +5,8 @@ import "./Dashboard.css";
 import CreateInventoryForm from "./CreateInventoryForm";
 import { Circles } from "react-loading-icons";
 
+const PORT = 3000;
+
 function Dashboard(props) {
   const [inventories, setInventories] = useState(props.user.inventoryList);
   console.log(props);
@@ -12,7 +14,7 @@ function Dashboard(props) {
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
-        "http://localhost:5000/inventory",
+        "http://localhost:${PORT}/inventory",
         inventory
       );
       return response;
@@ -34,7 +36,7 @@ function Dashboard(props) {
   async function deleteInventory(id) {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/inventory/${id}`
+        `http://localhost:${PORT}/inventory/${id}`
       );
       return response;
     } catch (error) {
