@@ -180,6 +180,25 @@ async function deleteItem(invId, itemId) {
   }
 }
 
+async function updateItem(invId, itemId, colName, value) {
+  if (!invId || !itemId) throw new Error("Invalid id");
+  const inventory = await Inventory.findById(invId);
+  if (inventory === null) throw new Error("Inventory not found");
+  let col = inventory["columnNames"].indexOf(colName);
+  if (col === -1) {
+    console.log("Invalid column");
+  } else {
+    // This goes through all of the items in the Inventory Table to find the matching item Id
+    const result = await Inventory.findById(invId);
+    for (let i = 0; i < result["inventoryTable"].length; i++) {
+      if (result["inventoryTable"][i]["_id"].equals(itemId)) {
+        result["inventoryTable"][i]["values"][col] = value;
+      }
+    }
+    await result.save();
+  }
+}
+
 /********************************
  *  Database testing functions
  ********************************/
@@ -202,5 +221,6 @@ exports.updateColumnName = updateColumnName;
 
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
+exports.updateItem = updateItem;
 
 exports.database = database;

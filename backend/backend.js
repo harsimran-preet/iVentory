@@ -127,6 +127,20 @@ app.delete(
   })
 );
 
+app.put(
+  "/item/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.updateItem(
+      req.params.inventoryId,
+      req.body["itemId"],
+      req.body["colName"],
+      req.body["value"]
+    );
+    res.status(204).end();
+    next();
+  })
+);
+
 app.use(resourceHandler);
 app.use(validationHandler);
 app.use(errorHandler);
