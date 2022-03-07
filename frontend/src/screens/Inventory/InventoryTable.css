@@ -83,3 +83,34 @@
   color: black;
   border: none;
 }
+
+.table-input {
+  align-self: left;
+  width: 50px;
+  vertical-align: top;
+}
+
+.my-popup-content {
+  width: 300px;
+}
+.my-popup-arrow {
+  color: rgb(240, 100, 100);
+}
+
+.my-popup-overlay {
+  width: 500px;
+}
+
+.inventable-submit-button {
+  padding: 8px 8px 0px 8px;
+  text-align: center;
+  display: flex;
+}
+
+label {
+  padding: 0px;
+}
+
+input {
+  padding: 0px;
+}
