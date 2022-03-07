@@ -39,14 +39,20 @@ function App() {
                     Sign up
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/create-item"}>
+                    Create Item
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
 
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Switch>
+
+        <Switch>
+          <div className="auth-wrapper">
+            <div className="auth-inner">
               <Route exact path="/" component={Login} />
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={SignUp} />
@@ -56,7 +62,7 @@ function App() {
               </Route>
             </Switch>
           </div>
-        </div>
+        </Switch>
       </div>
     </Router>
   );
