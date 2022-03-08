@@ -48,16 +48,10 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre("save", async function (next) {
   let result = await User.countDocuments({
-    email: this.email,
+    $or: [{ username: this.username }, { email: this.email }],
   });
   if (result !== 0) {
-    throw new Error("User validation failed: Email already registered");
-  }
-  result = await User.countDocuments({
-    username: this.username,
-  });
-  if (result !== 0) {
-    throw new Error("User validation failed: Username already exists");
+    throw new Error("User validation failed: User already registered");
   }
   next();
 });
