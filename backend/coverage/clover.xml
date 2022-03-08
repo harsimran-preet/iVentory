@@ -1,29 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1646701423336" clover="3.2.0">
-  <project timestamp="1646701423336" name="All files">
-    <metrics statements="17" coveredstatements="17" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3" elements="24" coveredelements="24" complexity="0" loc="17" ncloc="17" packages="1" files="2" classes="2"/>
-    <file name="user-test-service.js" path="/Users/ujwal/Programming/CalPoly/CSC307/iVentory/backend/models/user-test-service.js">
-      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+<coverage generated="1646703940387" clover="3.2.0">
+  <project timestamp="1646703940387" name="All files">
+    <metrics statements="35" coveredstatements="35" conditionals="10" coveredconditionals="10" methods="6" coveredmethods="6" elements="51" coveredelements="51" complexity="0" loc="35" ncloc="35" packages="1" files="4" classes="4"/>
+    <file name="inventory-test-service.js" path="/Users/ujwal/Programming/CalPoly/CSC307/iVentory/backend/models/inventory-test-service.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <line num="1" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
+      <line num="8" count="2" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+    <file name="inventory.js" path="/Users/ujwal/Programming/CalPoly/CSC307/iVentory/backend/models/inventory.js">
+      <metrics statements="14" coveredstatements="14" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="37" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="38" count="1" type="stmt"/>
+      <line num="52" count="1" type="stmt"/>
+      <line num="53" count="2" type="stmt"/>
+      <line num="54" count="2" type="cond" truecount="4" falsecount="0"/>
+      <line num="55" count="1" type="stmt"/>
+      <line num="57" count="1" type="stmt"/>
+      <line num="60" count="1" type="stmt"/>
+      <line num="62" count="1" type="stmt"/>
+    </file>
+    <file name="user-test-service.js" path="/Users/ujwal/Programming/CalPoly/CSC307/iVentory/backend/models/user-test-service.js">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="2" type="stmt"/>
+      <line num="3" count="2" type="stmt"/>
       <line num="4" count="2" type="stmt"/>
       <line num="10" count="2" type="stmt"/>
-      <line num="13" count="1" type="stmt"/>
+      <line num="13" count="2" type="stmt"/>
     </file>
     <file name="user.js" path="/Users/ujwal/Programming/CalPoly/CSC307/iVentory/backend/models/user.js">
       <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="10" count="1" type="stmt"/>
+      <line num="1" count="2" type="stmt"/>
+      <line num="3" count="2" type="stmt"/>
+      <line num="10" count="2" type="stmt"/>
       <line num="31" count="7" type="cond" truecount="2" falsecount="0"/>
       <line num="32" count="1" type="stmt"/>
-      <line num="49" count="1" type="stmt"/>
+      <line num="49" count="2" type="stmt"/>
       <line num="50" count="2" type="stmt"/>
       <line num="53" count="2" type="cond" truecount="2" falsecount="0"/>
       <line num="54" count="1" type="stmt"/>
       <line num="56" count="1" type="stmt"/>
-      <line num="59" count="1" type="stmt"/>
-      <line num="61" count="1" type="stmt"/>
+      <line num="59" count="2" type="stmt"/>
+      <line num="61" count="2" type="stmt"/>
     </file>
   </project>
 </coverage>
