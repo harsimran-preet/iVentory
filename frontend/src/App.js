@@ -8,6 +8,7 @@ import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import InventoryTable from "./screens/Inventory/InventoryTable";
+import ItemDescription from "./screens/Inventory/itemDescription";
 import axios from "axios";
 
 function App() {
@@ -55,11 +56,6 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to={"/dashboard"}>
-                    Dashboard
-                  </Link>
-                </li>
-                <li className="nav-item">
                   <Link className="nav-link" to={"/login"}>
                     Login
                   </Link>
@@ -72,6 +68,11 @@ function App() {
                 <li className="nav-item">
                   <Link className="nav-link" to={"/dashboard"}>
                     Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/item"}>
+                    Item Description
                   </Link>
                 </li>
               </ul>
@@ -93,6 +94,9 @@ function App() {
               </Route>
               <Route path="/inventory/:inventoryId">
                 <InventoryTable user={user} updateUser={updateUser} />
+              </Route>
+              <Route path="/item">
+                <ItemDescription user={user} updateUser={updateUser} />
               </Route>
             </div>
           </div>

@@ -31,6 +31,7 @@ const InventorySchema = new mongoose.Schema(
     permissions: [PermissionSchema],
     description: {
       type: String,
+      required: true,
       trim: true,
       validate(value) {
         if (value.length > 100)
@@ -49,8 +50,8 @@ const InventorySchema = new mongoose.Schema(
 );
 
 InventorySchema.pre("save", async function (next) {
-  let result = await User.findById(this.permissions[0].userId);
-  if (!result) {
+  let result = await User.find({ _id: this.permissions[0].userId });
+  if (result.length === 0 || !result) {
     throw new Error("Inventory validation failed: User not found");
   }
   next();
