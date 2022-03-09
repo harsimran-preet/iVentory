@@ -29,14 +29,22 @@ async function register(data) {
 async function authenticate(data) {
   const username = data["username"];
   const password = data["password"];
+  console.log(username, password);
   let user = await User.findOne({
     username: username,
     password: password,
   })
     .populate("inventoryList.inventoryId")
+    // .populate("inventoryList.inventoryId.permissions.userId")
     .exec();
   if (user == null) throw new Error("User not found");
   return user;
+}
+
+async function getUsername(userId) {
+  let name = await User.findById(userId).select("username").exec();
+  console.log(name);
+  return name;
 }
 
 /********************************
@@ -238,6 +246,7 @@ async function updateItem(invId, itemId, colName, value) {
 //exports.getUsers = getUsers;
 exports.register = register;
 exports.authenticate = authenticate;
+exports.getUsername = getUsername;
 
 exports.getInventories = getInventories;
 exports.createInventory = createInventory;
