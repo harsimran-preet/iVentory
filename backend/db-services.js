@@ -99,7 +99,6 @@ async function addUserToInventory(userName, invId) {
         return Promise.reject(new Error("No user with that username"));
       }
       const uid = result["_id"];
-      console.log(invId);
       const newInv = { inventoryId: invId };
       User.findByIdAndUpdate(
         uid,
@@ -113,6 +112,27 @@ async function addUserToInventory(userName, invId) {
 
       Inventory.findByIdAndUpdate(invId, {
         $push: { permissions: { userId: uid } },
+      }).exec();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function removeUserFromInventory(userName, invId) {
+  const user = getUserByName(userName);
+  user.
+    then(function (result) {
+      if (result === null) {
+        return Promise.reject(new Error("No user with that username"));
+      }
+      const uid = result["_id"];
+      User.findByIdAndUpdate(uid, {
+        $pull: {inventoryList: {inventoryId:invId}}//{ "inventoryList.$.inventoryId": invId }
+      }).exec();
+      
+      Inventory.findByIdAndUpdate(invId, {
+        $pull: {permissions: {userId:uid}}//{ "permissions.$.userId": uid }
       }).exec();
     })
     .catch((err) => {
@@ -245,6 +265,7 @@ exports.deleteInventory = deleteInventory;
 exports.getInventory = getInventory;
 
 exports.addUserToInventory = addUserToInventory;
+exports.removeUserFromInventory = removeUserFromInventory;
 
 exports.addColumn = addColumn;
 exports.delColumn = delColumn;
