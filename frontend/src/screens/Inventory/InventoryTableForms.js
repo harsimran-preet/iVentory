@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Row from "react-bootstrap/Row";
+import "./InventoryTable.css";
 
 export function ColumnForm(props) {
   const [column, setColumn] = useState({ name: "" });
@@ -100,20 +101,24 @@ export function ItemForm(props) {
   }
 
   return (
-    <form>
-      <Row key={props.k}>
-        <label key={"item" + props.k}>New Value</label>
-        <input
-          className="table-input"
-          key={"input" + props.k}
-          type="text"
-          value={value}
-          onChange={handleChange}
-        />
-      </Row>
-      <button onClick={editItem} className="inventable-submit-button">
-        <p>Edit Item</p>
-      </button>
-    </form>
+    <div className="new2">
+      <form>
+        <div className="new">
+          <Row key={props.k}>
+            <label key={"item" + props.k}>New Value</label>
+            <input
+              className="table-input"
+              key={"input" + props.k}
+              type="text"
+              value={value}
+              onChange={handleChange}
+            />
+          </Row>
+          <button onClick={editItem} className="inventable-submit-button">
+            <p>Edit Item</p>
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

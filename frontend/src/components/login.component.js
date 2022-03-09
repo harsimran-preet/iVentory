@@ -9,8 +9,6 @@ function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
-  // const [error, setError] = useState(false);
-  // const [loading, setLoading] = useState(false);
   useEffect(() => {});
 
   const submitHandler = async (e) => {
@@ -18,12 +16,11 @@ function Login(props) {
     async function getUser(userCred) {
       try {
         let result = await axios.get("http://localhost:5000/user", userCred);
-        //setUsername(result["data"]["user"]["username"]);
         localStorage.setItem("userInfo", JSON.stringify(result));
-        // console.log(result);
+      
         return result;
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         return false;
       }
     }
@@ -37,8 +34,6 @@ function Login(props) {
     if (result.status === 200) {
       setAuthenticated(true);
     }
-    // if (result.statusCode === 200)
-    // console.log(username, password);
     props.handleUserLogin(userCred);
   };
 
@@ -70,7 +65,6 @@ function Login(props) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
           <div className="form-group">
             <div className="custom-control custom-checkbox">
               <input
@@ -89,14 +83,11 @@ function Login(props) {
           </button>
           <p className="forgot-password text-right">
             Forgot password?
-            {/* Forgot <a href="#">password?</a> */}
           </p>
         </form>
       </MainScreen>
     );
   else {
-    console.log("ATHETNICATEd");
-
     return (
       <div>
         <Redirect to="/dashboard"></Redirect>
