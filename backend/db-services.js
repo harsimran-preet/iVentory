@@ -128,11 +128,11 @@ async function removeUserFromInventory(userName, invId) {
       }
       const uid = result["_id"];
       User.findByIdAndUpdate(uid, {
-        $pull: {inventoryList: {inventoryId:invId}}//{ "inventoryList.$.inventoryId": invId }
+        $pull: {inventoryList: {inventoryId:invId}}
       }).exec();
       
       Inventory.findByIdAndUpdate(invId, {
-        $pull: {permissions: {userId:uid}}//{ "permissions.$.userId": uid }
+        $pull: {permissions: {userId:uid}}
       }).exec();
     })
     .catch((err) => {
