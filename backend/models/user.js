@@ -1,3 +1,5 @@
+//import bcrypt from "bcryptjs";
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
 const InventoryListSchema = new mongoose.Schema({
@@ -7,7 +9,7 @@ const InventoryListSchema = new mongoose.Schema({
   },
 });
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -46,7 +48,9 @@ const UserSchema = new mongoose.Schema(
   { collection: "user_list" }
 );
 
-UserSchema.pre("save", async function (next) {
+
+
+userSchema.pre("save", async function (next) {
   let result = await User.countDocuments({
     email: this.email,
   });
@@ -62,6 +66,6 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

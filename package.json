@@ -25,7 +25,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.1",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "react-redux": "^7.2.6"
   },
   "devDependencies": {
     "prettier": "^2.5.1",

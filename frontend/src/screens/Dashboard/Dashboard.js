@@ -14,7 +14,7 @@ function Dashboard(props) {
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
-        "http://localhost:${PORT}/inventory",
+        `http://localhost:${PORT}/inventory`,
         inventory
       );
       return response;

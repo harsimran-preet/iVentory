@@ -11,6 +11,7 @@ import InventoryTable from "./screens/Inventory/InventoryTable";
 import axios from "axios";
 
 function App() {
+  const [userCred, setUserCred] = useState({ username: "", password: "" });
   const [user, setUser] = useState({ state: false });
 
   useEffect(() => {
@@ -19,18 +20,25 @@ function App() {
         let result = await axios.get("http://localhost:5000/user", userCred);
         setUser(result["data"]["user"]);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     }
-    const userCred = {
-      params: {
-        username: "example",
-        password: "examplepassword",
-      },
-    };
-    getUser(userCred);
-  }, []);
+    // const userCred = {
+    //   params: {
+    //     username: "example",
+    //     password: "examplepassword",
+    //   },
+    // };
+    if (!getUser(userCred)) {
+      console.log("Invalid Username or Password");
+    }
+  }, [userCred]);
+
+  function handleUserLogin(userCred) {
+    // console.log(userCred);
+    setUserCred(userCred);
+  }
 
   function updateUser() {
     forceUpdate(user);
@@ -52,7 +60,7 @@ function App() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={"/sign-in"}>
+                  <Link className="nav-link" to={"/login"}>
                     Login
                   </Link>
                 </li>
@@ -75,7 +83,9 @@ function App() {
           <div className="auth-wrapper">
             <div className="auth-inner">
               <Route exact path="/" component={Login} />
-              <Route path="/sign-in" component={Login} />
+              <Route path="/login">
+                <Login handleUserLogin={handleUserLogin} />
+              </Route>
               <Route path="/sign-up" component={SignUp} />
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">

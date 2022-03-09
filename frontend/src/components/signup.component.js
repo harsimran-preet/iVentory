@@ -42,6 +42,12 @@ export default class SignUp extends Component {
             placeholder="Enter password"
           />
         </div>
+        <div class="mb-3">
+          <label for="formFile" class="form-label">
+            Profile Picture
+          </label>
+          <input class="form-control" type="file" id="formFile"></input>
+        </div>
 
         <button type="submit" className="btn btn-primary btn-block">
           Sign Up
