@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MainScreen from "./MainScreen";
-import Dashboard from "../screens/Dashboard/Dashboard";
 import { Redirect } from "react-router-dom";
 
 import "../index.css";
