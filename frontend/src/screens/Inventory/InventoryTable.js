@@ -1,6 +1,6 @@
 import React from "react";
 import "./InventoryTable.css";
-import { useParams } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 import { Circles } from "react-loading-icons";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
@@ -137,10 +137,6 @@ function InventoryTableBody(props) {
     });
   }
 
-  function editItemCall(item) {
-    console.log(item);
-  }
-
   // for indexing extra 1 for tr html element
   const numItems = props.rows.length + 1;
   let rows = props.rows.map((item, rowidx) => {
@@ -150,7 +146,7 @@ function InventoryTableBody(props) {
       if (value === "") {
         return (
           <td className="inventable-empty-td" key={idx}>
-            <Popup
+            {/* <Popup
               className="my-popup"
               trigger={
                 <button className="inventable-item">
@@ -164,13 +160,16 @@ function InventoryTableBody(props) {
                 itemId={item._id}
                 colName={props.columnNames[colidx]}
               />
-            </Popup>
+            </Popup> */}
+            <Link to={`/item/${props.invId}/${item._id}`}>
+              <p>|Empty|</p>
+            </Link>
           </td>
         );
       }
       return (
         <td className="inventable-td" key={idx}>
-          <Popup
+          {/* <Popup
             className="my-popup"
             trigger={
               <button className="inventable-item">
@@ -184,12 +183,16 @@ function InventoryTableBody(props) {
               itemId={item._id}
               colName={props.columnNames[colidx]}
             />
-          </Popup>
+          </Popup> */}
+          <Link to={`/item/${props.invId}/${item._id}`}>
+            <p>{value}</p>
+          </Link>
         </td>
       );
     });
     return (
       <tr className="inventable-tr" key={rowidx * numItems}>
+        {/* <Link to={`/item/${props.invId}/${item._id}`}>{cols}</Link> */}
         {cols}
       </tr>
     );

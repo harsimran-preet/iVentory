@@ -93,8 +93,8 @@
 
 .table-input {
   align-self: left;
-  width: 50px;
-  vertical-align: top;
+  width: 200px;
+  vertical-align: center;
 }
 
 .my-popup-content {
@@ -109,7 +109,7 @@
 }
 
 .inventable-submit-button {
-  padding: 8px 8px 0px 8px;
+  padding: 8px 8px 8px 8px;
   text-align: center;
   display: flex;
 }

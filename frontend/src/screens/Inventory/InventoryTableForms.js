@@ -81,6 +81,7 @@ export function RowForm(props) {
 // props.k - itemform index
 // props.handleEditItem - api call to edit the item
 // props.itemId - itemId for props.handleEditItem
+// props.invId - invId for props.handleEditItem
 // props.colName - column name of the value you are editing
 export function ItemForm(props) {
   const [value, setValue] = useState("");
@@ -96,15 +97,14 @@ export function ItemForm(props) {
       value: value,
       colName: props.colName,
     };
-    props.handleEditItem(item);
-    // setValue("");
+    props.handleEditItem(item, props.invId);
   }
 
   return (
     <div className="new2">
       <form>
         <div className="new">
-          <Row key={props.k}>
+          <Row style={{ display: "flex", overflow: "auto" }} key={props.k}>
             <label key={"item" + props.k}>New Value</label>
             <input
               className="table-input"
@@ -113,10 +113,10 @@ export function ItemForm(props) {
               value={value}
               onChange={handleChange}
             />
+            <button onClick={editItem} className="inventable-submit-button">
+              <p>Edit Item</p>
+            </button>
           </Row>
-          <button onClick={editItem} className="inventable-submit-button">
-            <p>Edit Item</p>
-          </button>
         </div>
       </form>
     </div>

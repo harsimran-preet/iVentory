@@ -31,7 +31,7 @@ function App() {
       },
     };
     getUser(userCred);
-  }, []);
+  }, [user]);
 
   function updateUser() {
     forceUpdate(user);
@@ -85,7 +85,7 @@ function App() {
               <Route path="/inventory/:inventoryId">
                 <InventoryTable user={user} updateUser={updateUser} />
               </Route>
-              <Route path="/item">
+              <Route path="/item/:inventoryId/:itemId">
                 <ItemDescription user={user} updateUser={updateUser} />
               </Route>
             </div>
