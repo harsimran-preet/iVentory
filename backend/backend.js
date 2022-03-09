@@ -112,6 +112,17 @@ app.put(
   })
 );
 
+app.delete(
+  "/user/:inventoryId",
+  catchAsync(async (req, res, next) => {
+    await dbService.removeUserFromInventory(
+      req.body["username"],
+      req.params.inventoryId);
+    res.status(204).end();
+    next();
+  })
+);
+
 app.put(
   "/column/:inventoryId",
   catchAsync(async (req, res, next) => {
