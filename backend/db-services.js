@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 /********************************
  *  User functions
  ********************************/
-async function getUsers() {
-  return await User.find();
+async function getUserByName(userName) {
+  return await User.findOne({ username: userName }).exec();
 }
 
 async function register(data) {
@@ -29,14 +29,22 @@ async function register(data) {
 async function authenticate(data) {
   const username = data["username"];
   const password = data["password"];
+  console.log(username, password);
   let user = await User.findOne({
     username: username,
     password: password,
   })
     .populate("inventoryList.inventoryId")
+    // .populate("inventoryList.inventoryId.permissions.userId")
     .exec();
   if (user == null) throw new Error("User not found");
   return user;
+}
+
+async function getUsername(userId) {
+  let name = await User.findById(userId).select("username").exec();
+  console.log(name);
+  return name;
 }
 
 /********************************
@@ -91,9 +99,33 @@ async function deleteInventory(id) {
   await Inventory.deleteOne({ _id: id });
 }
 
-async function addUserToInventory(userName, id) {
-  const user = await User.find({ username: userName }).exex();
-  console.log(user);
+async function addUserToInventory(userName, invId) {
+  const user = getUserByName(userName);
+  user
+    .then(function (result) {
+      if (result === null) {
+        return Promise.reject(new Error("No user with that username"));
+      }
+      const uid = result["_id"];
+      console.log(invId);
+      const newInv = { inventoryId: invId };
+      User.findByIdAndUpdate(
+        uid,
+        {
+          $push: { inventoryList: newInv },
+        },
+        {
+          upsert: true,
+        }
+      ).exec();
+
+      Inventory.findByIdAndUpdate(invId, {
+        $push: { permissions: { userId: uid } },
+      }).exec();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 async function updateColumnName(old_name, new_name, id) {
@@ -195,8 +227,6 @@ async function updateItem(invId, itemId, colName, value) {
   if (col === -1) {
     console.log("Invalid column");
   } else {
-    // This goes through all of the items in the Inventory Table to find the matching item Id
-    //const result = await Inventory.findById(invId);
     for (let i = 0; i < inventory["inventoryTable"].length; i++) {
       if (inventory["inventoryTable"][i]["_id"].equals(itemId)) {
         inventory["inventoryTable"][i]["values"][col] = value;
@@ -213,9 +243,10 @@ async function updateItem(invId, itemId, colName, value) {
 /********************************
  *  Exports
  ********************************/
-exports.getUsers = getUsers;
+//exports.getUsers = getUsers;
 exports.register = register;
 exports.authenticate = authenticate;
+exports.getUsername = getUsername;
 
 exports.getInventories = getInventories;
 exports.createInventory = createInventory;

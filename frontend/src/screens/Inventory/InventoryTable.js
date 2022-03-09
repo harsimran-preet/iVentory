@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "./InventoryTable.css";
 import { useParams } from "react-router-dom";
 import { Circles } from "react-loading-icons";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdPerson } from "react-icons/md";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import axios from "axios";
+import { ColumnForm, RowForm, ItemForm } from "./InventoryTableForms";
+import UserShare from "./UserShare";
 
 /* /inventory/:inventoryId */
 function InventoryTable(props) {
@@ -20,15 +22,27 @@ function InventoryTable(props) {
     }
   }
 
+  // console.log(props.user);
+
   return (
     <div className="table-inner">
       <h2>Inventory: {inventory.name}</h2>
       <h5>{inventory.description}</h5>
-      <Link to="/dashboard">
-        <Row className="back-button">
+
+      <Row className="back-button">
+        <Link to="/dashboard" className="back-to-dashboard">
           <h5>Back to Dashboard</h5>
-        </Row>
-      </Link>
+        </Link>
+        <Popup
+          trigger={
+            <button>
+              <MdPerson size={28}></MdPerson>
+            </button>
+          }
+        >
+          <UserShare userList={inventory.permissions}></UserShare>
+        </Popup>
+      </Row>
       <div className="inventory-table">
         <table>
           <InventoryTableHeader
@@ -84,6 +98,7 @@ function InventoryTableHeader(props) {
         {columns}
         <th>
           <Popup
+            className="my-popup"
             trigger={
               <button className="inventable-button">
                 <MdAdd size={24} className="inventable-add" />
@@ -136,6 +151,7 @@ function InventoryTableBody(props) {
         return (
           <td className="inventable-empty-td" key={idx}>
             <Popup
+              className="my-popup"
               trigger={
                 <button className="inventable-item">
                   <p>|Empty|</p>
@@ -155,6 +171,7 @@ function InventoryTableBody(props) {
       return (
         <td className="inventable-td" key={idx}>
           <Popup
+            className="my-popup"
             trigger={
               <button className="inventable-item">
                 <p>{value}</p>
@@ -198,118 +215,6 @@ function InventoryTableBody(props) {
         </td>
       </tr>
     </tbody>
-  );
-}
-
-function ColumnForm(props) {
-  const [column, setColumn] = useState({ name: "" });
-
-  function createColumn() {
-    props.handleCreateColumn(column);
-    setColumn({ name: "" });
-  }
-
-  function handleChange(event) {
-    const { value } = event.target;
-    setColumn({ name: value });
-  }
-
-  return (
-    <form>
-      <label>New Column Name</label>
-      <input
-        type="text"
-        id="name"
-        value={column.name}
-        onChange={handleChange}
-      />
-      <button onClick={createColumn}>Create Column</button>
-    </form>
-  );
-}
-
-function RowForm(props) {
-  const initValues = (names) => {
-    let initVal = {};
-    for (const n of names) initVal[n] = "";
-    return initVal;
-  };
-  const [values, setValues] = useState(initValues(props.columnNames));
-
-  function createRow() {
-    props.handleCreateRow(values);
-    setValues(initValues(props.columnNames));
-  }
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    let copy = JSON.parse(JSON.stringify(values));
-    copy[name] = value;
-    setValues(copy);
-  }
-
-  let inputVals = props.columnNames.map((name, index) => {
-    let value = values[index];
-    return (
-      <Row key={index * 3}>
-        <label key={index * 3 + 1}>{name}</label>
-        <input
-          key={index * 3 + 2}
-          type="text"
-          id={name}
-          name={name}
-          value={value}
-          onChange={handleChange}
-        />
-      </Row>
-    );
-  });
-
-  return (
-    <form>
-      {inputVals}
-      <button onClick={createRow}>Create Item</button>
-    </form>
-  );
-}
-
-// props.k - itemform index
-// props.handleEditItem - api call to edit the item
-// props.itemId - itemId for props.handleEditItem
-// props.colName - column name of the value you are editing
-function ItemForm(props) {
-  const [value, setValue] = useState("");
-
-  function handleChange(event) {
-    const v = event.target.value;
-    setValue(v);
-  }
-
-  function editItem() {
-    const item = {
-      itemId: props.itemId,
-      value: value,
-      colName: props.colName,
-    };
-    props.handleEditItem(item);
-    // setValue("");
-  }
-
-  return (
-    <form>
-      <Row key={props.k}>
-        <label key={"item" + props.k}>New Value</label>
-        <input
-          key={"input" + props.k}
-          type="text"
-          value={value}
-          onChange={handleChange}
-        />
-        <button onClick={editItem}>
-          <p>Edit</p>
-        </button>
-      </Row>
-    </form>
   );
 }
 

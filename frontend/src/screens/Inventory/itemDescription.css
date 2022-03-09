@@ -28,9 +28,6 @@
   right: 8%;
   margin: 0;
   float: right;
-  text-align: center;
-  vertical-align: center;
-  align-items: center;
 }
 
 .inventable-tbody,
@@ -116,13 +113,4 @@ label {
 
 input {
   padding: 0px;
-}
-
-.back-to-dashboard {
-  padding: 0px 8px 0px 0px;
-}
-
-.userrows {
-  padding: 0px 16px;
-  align-items: center;
 }
