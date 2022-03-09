@@ -1,16 +1,8 @@
 import axios from "axios";
-import { createStore } from "redux";
-import React, { Component, useEffect, useState } from "react";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import MainScreen from "./MainScreen";
 import Dashboard from "../screens/Dashboard/Dashboard";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import "../index.css";
 
@@ -97,7 +89,8 @@ function Login(props) {
             Login
           </button>
           <p className="forgot-password text-right">
-            Forgot <a href="#">password?</a>
+            Forgot password?
+            {/* Forgot <a href="#">password?</a> */}
           </p>
         </form>
       </MainScreen>
