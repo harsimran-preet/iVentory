@@ -8,6 +8,7 @@ import SignUp from "./components/signup.component";
 import Welcome from "./components/welcome.component";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import InventoryTable from "./screens/Inventory/InventoryTable";
+import ItemDescription from "./screens/Inventory/itemDescription";
 import axios from "axios";
 
 function App() {
@@ -61,6 +62,11 @@ function App() {
                     Dashboard
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/item"}>
+                    Item Description
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -78,6 +84,9 @@ function App() {
               </Route>
               <Route path="/inventory/:inventoryId">
                 <InventoryTable user={user} updateUser={updateUser} />
+              </Route>
+              <Route path="/item">
+                <ItemDescription user={user} updateUser={updateUser} />
               </Route>
             </div>
           </div>
