@@ -30,7 +30,7 @@ function App() {
       },
     };
     getUser(userCred);
-  }, [user]);
+  }, []);
 
   function updateUser() {
     forceUpdate(user);
