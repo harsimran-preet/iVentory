@@ -4,11 +4,12 @@ import { useParams } from "react-router-dom";
 import { Circles } from "react-loading-icons";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdPerson } from "react-icons/md";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import axios from "axios";
 import { ColumnForm, RowForm, ItemForm } from "./InventoryTableForms";
+import UserShare from "./UserShare";
 
 /* /inventory/:inventoryId */
 function InventoryTable(props) {
@@ -21,15 +22,27 @@ function InventoryTable(props) {
     }
   }
 
+  // console.log(props.user);
+
   return (
     <div className="table-inner">
       <h2>Inventory: {inventory.name}</h2>
       <h5>{inventory.description}</h5>
-      <Link to="/dashboard">
-        <Row className="back-button">
+
+      <Row className="back-button">
+        <Link to="/dashboard" className="back-to-dashboard">
           <h5>Back to Dashboard</h5>
-        </Row>
-      </Link>
+        </Link>
+        <Popup
+          trigger={
+            <button>
+              <MdPerson size={28}></MdPerson>
+            </button>
+          }
+        >
+          <UserShare userList={inventory.permissions}></UserShare>
+        </Popup>
+      </Row>
       <div className="inventory-table">
         <table>
           <InventoryTableHeader

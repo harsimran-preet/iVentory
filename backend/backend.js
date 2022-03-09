@@ -39,6 +39,14 @@ app.post(
 );
 
 app.get(
+  "/name/:userId",
+  catchAsync(async (req, res, next) => {
+    let name = await dbService.getUsername(req.params.userId);
+    res.status(200).send({ name: name });
+  })
+);
+
+app.get(
   "/inventory",
   catchAsync(async (req, res, next) => {
     let inventories = await dbService.getInventories();
