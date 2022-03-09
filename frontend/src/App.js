@@ -25,12 +25,6 @@ function App() {
         return false;
       }
     }
-    // const userCred = {
-    //   params: {
-    //     username: "example",
-    //     password: "examplepassword",
-    //   },
-    // };
     if (!getUser(userCred)) {
       console.log("Invalid Username or Password");
     }
@@ -95,7 +89,7 @@ function App() {
               <Route path="/inventory/:inventoryId">
                 <InventoryTable user={user} updateUser={updateUser} />
               </Route>
-              <Route path="/item">
+              <Route path="/item/:inventoryId/:itemId">
                 <ItemDescription user={user} updateUser={updateUser} />
               </Route>
             </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import DashboardTable from "./DashboardTable";
 import "./Dashboard.css";
 import CreateInventoryForm from "./CreateInventoryForm";
@@ -8,9 +8,6 @@ import { Circles } from "react-loading-icons";
 const PORT = 5000;
 
 function Dashboard(props) {
-  const [inventories, setInventories] = useState(props.user.inventoryList);
-  console.log(props);
-
   async function createInventory(inventory) {
     try {
       const response = await axios.post(
@@ -26,10 +23,8 @@ function Dashboard(props) {
 
   function createInventoryCall(inventory) {
     createInventory(inventory).then((result) => {
-      let inventory = result["data"]["inventory"];
-      if (result !== undefined && result.status === 201)
-        setInventories([...inventories, inventory]);
-      props.updateUser();
+      console.log(result);
+      if (result !== undefined && result.status === 201) props.updateUser();
     });
   }
 
@@ -47,19 +42,14 @@ function Dashboard(props) {
 
   function deleteInventoryCall(id) {
     deleteInventory(id).then((result) => {
-      if (result !== undefined && result && result.status === 204)
-        setInventories(
-          inventories.filter((inv) => {
-            return inv == null ? inv : inv["_id"] !== id;
-          })
-        );
-      props.updateUser();
+      console.log(result);
+      if (result !== undefined && result && result.status === 204) {
+        props.updateUser();
+      }
     });
   }
 
-  useEffect(() => {
-    setInventories(props.user.inventoryList);
-  }, [props.user]);
+  let inventories = props.user.inventoryList;
 
   if (inventories === undefined) return <Circles />;
   else
