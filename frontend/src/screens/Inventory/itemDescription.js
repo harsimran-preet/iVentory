@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./itemDescription.css";
-import { useParams } from "react-router-dom";
-import { Circles } from "react-loading-icons";
-import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-import axios from "axios";
 
 /* /inventory/:inventoryId */
 function ItemDescription(props) {
