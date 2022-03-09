@@ -8,11 +8,8 @@ function UserShare(props) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     function getUsername(userId) {
-      //   console.log(userId);
       try {
         return axios.get(`http://localhost:5000/name/${userId}`);
-        // console.log("rr", rr);
-        // return rr["data"];
       } catch (error) {
         console.log(error);
         return false;
@@ -22,10 +19,8 @@ function UserShare(props) {
     async function getAllUsers(userList) {
       let r = [];
       for (const user of userList) {
-        // console.log(user);
         r.push(getUsername(user.userId));
       }
-      //   Promise.all(r);
       console.log(r);
       Promise.all(r).then((values) => {
         setUsers(
@@ -34,12 +29,9 @@ function UserShare(props) {
           })
         );
       });
-      //   console.log(r);
       return r;
     }
-    let result = getAllUsers(props.userList);
-    // setUsers(result);
-    // console.log(result);
+    getAllUsers(props.userList);
   }, []);
   if (users.length === 0) return <div></div>;
   else {
