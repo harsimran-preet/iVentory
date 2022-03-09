@@ -4,6 +4,8 @@ export default class Login extends Component {
   render() {
     return (
       <form>
+        <br></br>
+        <br></br>
         <h3>Login</h3>
 
         <div className="form-group">
@@ -36,7 +38,8 @@ export default class Login extends Component {
             </label>
           </div>
         </div>
-
+        <br></br>
+        <br></br>
         <button type="submit" className="btn btn-primary btn-block">
           Login
         </button>

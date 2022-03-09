@@ -7,6 +7,10 @@
   background-color: blue;
 } */
 
+.new {
+  width: 70%;
+}
+
 .table-inner {
   position: absolute;
   top: 8%;
