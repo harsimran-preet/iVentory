@@ -3,7 +3,6 @@
 ![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/node.js.yml/badge.svg)
 
 WELCOME!
-
 This is the iVentory WebApp, a place where you can satisfy all your inventory
 needs. The functionality of the app allows you to login, sign-up, create an inventory,
 create items in your inventory, modify your inventory, and much more. Please
