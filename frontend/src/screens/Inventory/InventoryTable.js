@@ -1,6 +1,6 @@
 import React from "react";
 import "./InventoryTable.css";
-import { Redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Circles } from "react-loading-icons";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
@@ -8,7 +8,7 @@ import { MdAdd, MdPerson } from "react-icons/md";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import axios from "axios";
-import { ColumnForm, RowForm, ItemForm } from "./InventoryTableForms";
+import { ColumnForm, RowForm } from "./InventoryTableForms";
 import UserShare from "./UserShare";
 
 /* /inventory/:inventoryId */
@@ -21,8 +21,6 @@ function InventoryTable(props) {
       if (inv.inventoryId._id === inventoryId) inventory = inv.inventoryId;
     }
   }
-
-  // console.log(props.user);
 
   return (
     <div className="table-inner">

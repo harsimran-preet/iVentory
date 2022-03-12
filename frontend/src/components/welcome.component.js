@@ -14,9 +14,9 @@ export default class Welcome extends Component {
         </p>
         <p align="center">All for Free (for now)</p>
 
-        {/* <button type="submit" className="btn btn-primary btn-block">
+        <button type="submit" className="btn btn-primary btn-block">
           Login
-        </button> */}
+        </button>
         <Link className="btn btn-primary btn-block" to={"/sign-in"}>
           Login
         </Link>

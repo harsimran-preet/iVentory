@@ -12,6 +12,7 @@ import ItemDescription from "./screens/Inventory/itemDescription";
 import axios from "axios";
 
 function App() {
+  const [userCred, setUserCred] = useState({ username: "", password: "" });
   const [user, setUser] = useState({ state: false });
 
   useEffect(() => {
@@ -20,21 +21,37 @@ function App() {
         let result = await axios.get("http://localhost:5000/user", userCred);
         setUser(result["data"]["user"]);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return false;
       }
     }
-    const userCred = {
-      params: {
-        username: "example",
-        password: "examplepassword",
-      },
-    };
-    getUser(userCred);
-  }, [user]);
+    if (!getUser(userCred)) {
+      console.log("Invalid Username or Password");
+    }
+  }, [userCred]);
+
+  function handleUserLogin(userCred) {
+    // console.log(userCred);
+    setUserCred(userCred);
+  }
 
   function updateUser() {
     forceUpdate(user);
+  }
+
+  async function handleUserRegister(user) {
+    // console.log(user);
+    let result;
+    try {
+      result = await axios.post("http://localhost:5000/user", user);
+    } catch (error) {
+      console.log(error);
+      setUserCred({ username: "", password: "" });
+    }
+    console.log(result);
+    if (result && result !== undefined && result.status === 201) {
+      setUserCred({ username: user.username, password: user.password });
+    }
   }
 
   return (
@@ -48,7 +65,7 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to={"/sign-in"}>
+                  <Link className="nav-link" to={"/login"}>
                     Login
                   </Link>
                 </li>
@@ -75,9 +92,15 @@ function App() {
         <Switch>
           <div className="auth-wrapper">
             <div className="auth-inner">
-              <Route exact path="/" component={Login} />
-              <Route path="/sign-in" component={Login} />
-              <Route path="/sign-up" component={SignUp} />
+              <Route exact path="/">
+                <Login handleUserLogin={handleUserLogin} />
+              </Route>
+              <Route path="/login">
+                <Login handleUserLogin={handleUserLogin} />
+              </Route>
+              <Route path="/sign-up">
+                <SignUp handleUserRegister={handleUserRegister}></SignUp>
+              </Route>
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">
                 <Dashboard user={user} updateUser={updateUser}></Dashboard>
