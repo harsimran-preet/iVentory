@@ -17,7 +17,7 @@ function Login(props) {
       try {
         let result = await axios.get("http://localhost:5000/user", userCred);
         localStorage.setItem("userInfo", JSON.stringify(result));
-      
+
         return result;
       } catch (error) {
         console.log(error);
@@ -81,9 +81,7 @@ function Login(props) {
           <button type="submit" className="btn btn-primary btn-block">
             Login
           </button>
-          <p className="forgot-password text-right">
-            Forgot password?
-          </p>
+          <p className="forgot-password text-right">Forgot password?</p>
         </form>
       </MainScreen>
     );
