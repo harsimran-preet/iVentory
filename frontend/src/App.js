@@ -39,6 +39,21 @@ function App() {
     forceUpdate(user);
   }
 
+  async function handleUserRegister(user) {
+    // console.log(user);
+    let result;
+    try {
+      result = await axios.post("http://localhost:5000/user", user);
+    } catch (error) {
+      console.log(error);
+      setUserCred({ username: "", password: "" });
+    }
+    console.log(result);
+    if (result && result !== undefined && result.status === 201) {
+      setUserCred({ username: user.username, password: user.password });
+    }
+  }
+
   return (
     <Router>
       <div className="App">
@@ -77,11 +92,15 @@ function App() {
         <Switch>
           <div className="auth-wrapper">
             <div className="auth-inner">
-              <Route exact path="/" component={Login} />
+              <Route exact path="/">
+                <Login handleUserLogin={handleUserLogin} />
+              </Route>
               <Route path="/login">
                 <Login handleUserLogin={handleUserLogin} />
               </Route>
-              <Route path="/sign-up" component={SignUp} />
+              <Route path="/sign-up">
+                <SignUp handleUserRegister={handleUserRegister}></SignUp>
+              </Route>
               <Route path="/welcome" component={Welcome} />
               <Route path="/dashboard">
                 <Dashboard user={user} updateUser={updateUser}></Dashboard>
