@@ -1,6 +1,7 @@
 # iVentory
 
-![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/node.js.yml/badge.svg)
+![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/frontend.yml/badge.svg)
+![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/backend.yml/badge.svg)
 
 WELCOME!
 This is the iVentory WebApp, a place where you can satisfy all your inventory
