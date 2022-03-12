@@ -17,6 +17,8 @@ To run backend, `cd backend` and `npm run dev`
 To run frontend, `cd frontend` and `npm run start`
 To test backend, `cd backend` and `npm run test`
 
+Link to Github Actions Page: https://github.com/harsimran-preet/iVentory/actions
+
 Style Guide:
 
 | Plugin                   | Link                                                                                           |
@@ -24,3 +26,4 @@ Style Guide:
 | Prettier                 | [https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode][pldb]             |
 | Auto Rename Tag          | [https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag][plgh]      |
 | Bracket Pair Colorizer 2 | [https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2][plgd] |
+
