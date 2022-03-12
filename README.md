@@ -1,6 +1,8 @@
 # iVentory
 
+Frontend:
 ![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/frontend.yml/badge.svg)
+Backend:
 ![Node.js CI](https://github.com/harsimran-preet/iVentory/actions/workflows/backend.yml/badge.svg)
 
 WELCOME!
